@@ -3,11 +3,17 @@
       <div class="fund-title">
         <div class="fundtitle left-fundtitle">
           <img src="static/images/socialsecurity/find.png" alt="">
-          <span>社保</span>
+          <span>公积金</span>
         </div>
         <div class="fundtitle right-fundtitle">
-          <img src="static/images/socialsecurity/checked.png" alt="">
-          <span>缴纳</span>
+          <van-checkbox v-model="isPay2"   @click="shebaoClick2">
+            缴纳
+            <img
+              slot="icon"
+              slot-scope="props"
+              :src="props.checked ? icon.active : icon.inactive"
+            >
+          </van-checkbox>
         </div>
       </div>
       <van-divider />
@@ -19,6 +25,7 @@
             disabled
             placeholder="¥ 2200.00"
             @click-right-icon="getBase"
+            label-width="70%"
           />
           <van-field
             label="参保月份"
@@ -26,13 +33,14 @@
             disabled
             placeholder="2019-06 至 2019-08"
             @click-right-icon="getMonth"
+            label-width="50%"
           />
           <div class="payType">
             <div class="payTypeTop">
               <div>缴纳类型</div>
               <div class="payRadio">
                 <van-radio-group v-model="payRadio">
-                  <van-radio name="1">
+                  <van-radio @click="payRadioClick1" name="1">
                     新开户
                     <img
                       slot="icon"
@@ -41,7 +49,7 @@
                       :src="props.checked ? icon.active : icon.inactive"
                     >
                   </van-radio>
-                  <van-radio name="2">
+                  <van-radio name="2"  @click="payRadioClick1">
                     续缴
                     <img
                       slot="icon"
@@ -73,7 +81,7 @@
               <span>社保补缴</span>
             </div>
             <div class="soctitle right-ssoctitlebu">
-              <van-checkbox v-model="isPay">
+              <van-checkbox v-model="isPay3" @click="isPayClick1">
                 缴纳
                 <img
                   slot="icon"
@@ -81,6 +89,34 @@
                   :src="props.checked ? icon.active : icon.inactive"
                 >
               </van-checkbox>
+            </div>
+          </div>
+          <div class="isbujiao2">
+            <van-divider />
+            <div class="costSubtotal ">
+              <div>
+                <van-field
+                  label="参保月份"
+                  right-icon="arrow"
+                  disabled
+                  placeholder="2019-06 至 2019-08"
+                  @click-right-icon="getMonth"
+                  label-width="50%"
+                />
+              </div>
+              <div class="ps-socF97 delpd5">当前城市允许补缴3个月</div>
+            </div>
+            <van-divider />
+            <div class="costSubtotal">
+              <router-link :to="{name:'funddetailed'}" class="costSubtotalTop">
+                <div class="cosMoney">费用小计</div>
+                <div class="cosMoneyInfo">
+                  <span>¥ 2858.25</span>
+                  <span>明细</span>
+                  <img src="static/images/socialsecurity/youjiantou.png" alt="">
+                </div>
+              </router-link>
+              <div class="ps-socF97">注：当前城市社保强制缴纳，公积金可选</div>
             </div>
           </div>
         </van-cell-group>
@@ -93,14 +129,22 @@
         <h2 class="up-title">请输入参保基数</h2>
         <div class="addeducation">
           <div class="ginsenBase">
-            <van-field
+            <van-field v-if="minBase==false"
               type="text"
               label="请输入参保基数"
               placeholder="2200~27927"
               label-width="50%"
               label-class="labelBase"
             />
-            <van-checkbox v-model="checkedBase">
+            <van-field v-else
+              type="text"
+              label="123"
+              placeholder=""
+              label-width="50%"
+              label-class="labelBaseCol"
+              disabled
+            />
+            <van-checkbox v-model="checkedBase" @click="baseClick1">
               选择最低基数
               <img
                 slot="icon"
@@ -151,18 +195,24 @@
             ginsenMonth:false,
             currentDate: new Date(),
             minDate: new Date(),
-            checkedBase:0,
+            checkedBase:false,
+            minBase:false,
             insuredId:0,
             payRadio:1,
             showToolbar:false,
-            isPay:false,
+            isPay3:false,
+            isPay2:false,
+            isPay1:true,
             icon: {
-              active: 'static/images/coverage/select.png',
+              active: 'static/images/socialsecurity/checked.png',
               inactive: 'static/images/coverage/unselect.png'
             },
           }
       },
       methods:{
+        payRadioClick1(){
+          console.log(this.payRadio);
+        },
         // 取消
         cancel(){
           this.insuredType = false
@@ -191,7 +241,48 @@
           }
           return value;
         },
-
+        isPayClick1(){
+          console.log(this.isPay3)
+          if(this.isPay3 == true){
+            $('.isbujiao2').css({
+              display:'none'
+            })
+          }else {
+            $('.isbujiao2').css({
+              display:'block'
+            })
+          }
+        },
+        shebaoClick2(){
+          if(this.isPay2 == true){
+            $('.fundgroup').css({
+              display:'none'
+            })
+          }else {
+            $('.fundgroup').css({
+              display:'block'
+            })
+          }
+        },
+        baseClick1(){
+          if(this.checkedBase == false){
+            this.minBase = true
+          }else {
+            this.minBase = false
+          }
+        }
+      },
+      mounted() {
+        if(this.isPay3 == false){
+          $('.isbujiao2').css({
+            display:'none'
+          })
+        }
+        if(this.isPay2 == false){
+          $('.fundgroup').css({
+            display:'none'
+          })
+        }
       }
     }
 </script>
@@ -203,6 +294,12 @@
   }
   .fund .van-divider{
     margin: 0;
+  }
+  .delpd5{
+    padding-top: 0 !important;
+  }
+  .labelBaseCol{
+    color: #333;
   }
   .ps-soc11{
     font-size:.6rem;
@@ -275,6 +372,7 @@
     font-size:.7rem;
     font-family:PingFangSC-Regular;
   }
+
   .soctitle{
     display: flex;
     align-items: center;

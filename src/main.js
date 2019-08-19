@@ -40,15 +40,12 @@ import 'mint-ui/lib/style.css'
 import 'swiper/dist/css/swiper.css'
 
 Vue.config.productionTip = false
-// Vue.use(MintUI)
-// Axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded; charset=UTF-8'
 Vue.prototype.$ajax = Axios
 Vue.prototype.HOST = 'http://www.jzbshebao.cn'
 // Vue.prototype.HOST = 'http://localhost'
 Vue.prototype.$md5 = md5
 Vue.prototype.$toast = Toast
 Vue.prototype.common = common.common
-
 
 
 Vue.use(VueAxios,Axios)
@@ -72,15 +69,9 @@ Vue.use(Divider);
 Vue.use(Checkbox).use(CheckboxGroup)
 Vue.use(DatetimePicker);
 Vue.use(Collapse).use(CollapseItem);
+
 /* eslint-disable no-new */
-//钩子函数
-router.beforeEach((to,from,next) => {
-  /* 路由发生变化修改页面title */
-  if(to.meta.title){
-    document.title = to.meta.title;
-  }
-  next();
-})
+
 
 new Vue({
   el: '#app',

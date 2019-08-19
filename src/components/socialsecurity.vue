@@ -1,17 +1,17 @@
 <template>
   <div class="social">
-    <HeadNav />
+    <HeadNav/>
     <div class="content">
-      <IsHeadEmty />
+      <IsHeadEmty/>
       <div class="socHeadImg">
         <img class="cz_img" src="../../static/images/socialsecurity/process1.png" alt="">
       </div>
-      <Participants />
-      <Setmeal />
-      <PayOff />
-      <Noticeorprocess />
-      <van-button size="large" type="default">下一步</van-button>
-      <Isfootemty />
+      <Participants/>
+      <Setmeal/>
+      <PayOff/>
+      <Noticeorprocess/>
+      <van-button size="large" @click="nextStepBtn" type="default">下一步</van-button>
+      <Isfootemty/>
     </div>
   </div>
 </template>
@@ -24,47 +24,78 @@
   import Setmeal from "./socialsecurity/setmeal"
   import PayOff from "./socialsecurity/payoff"
   import Noticeorprocess from "./socialsecurity/noticeorprocess"
-export default {
-  name: 'socialsecurity',
-  components: {
-    HeadNav,
-    IsHeadEmty,
-    Participants,
-    Setmeal,
-    PayOff,
-    Noticeorprocess,
-    Isfootemty
-  },
 
-  data () {
-    return {
+  export default {
+    name: 'socialsecurity',
+    components: {
+      HeadNav,
+      IsHeadEmty,
+      Participants,
+      Setmeal,
+      PayOff,
+      Noticeorprocess,
+      Isfootemty
+    },
+
+    data() {
+      return {}
+    },
+    methods: {
+      nextStepBtn() {
+        let monthId = JSON.parse(window.localStorage.getItem('monthId'))
+        if ($('.participantsRight span').html() == "请选择参保人") {
+          this.$toast({
+            message: '请选择参保人'
+          })
+        }else if ($('.addInfo').html() == '请选择参保城市') {
+          this.$toast({
+            message: '请选择参保城市'
+          })
+        }else if (monthId == undefined) {
+          this.$toast({
+            message: '请选择参保月份'
+          })
+        }else {
+          this.$router.push({
+            name:"socialsecurity1",
+            params:{}
+          });
+        }
+      },
+
+    },
+    mounted() {
+
+    },
+    created() {
+      // window.localStorage.setItem("city",JSON.stringify(this.cityIdArr[index[0]]))
+
     }
-  },
-  methods:{
-  },
-  mounted() {
   }
-}
 </script>
 
 <style scoped>
-  .social{
+  .social {
     background: #F2F2F2;
   }
-  .content{
+
+  .content {
     background: #f2f2f2;
   }
-  .van-button--default{
+
+  .van-button--default {
     background: #F97A2E;
     color: #fff;
-    font-size:.9rem;
-    font-family:PingFangSC-Regular;
+    font-size: .9rem;
+    font-family: PingFangSC-Regular;
     margin-top: .8rem;
   }
-  .van-hairline--bottom{
+
+  .van-hairline--bottom {
     background: #F2F2F2 !important;
   }
-  .socHeadImg{
+
+  .socHeadImg {
     background: #f2f2f2;
     padding: .75rem 0;
   }

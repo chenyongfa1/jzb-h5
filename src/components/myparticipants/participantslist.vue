@@ -1,7 +1,9 @@
 <template>
     <div class="participantslist">
-      <div class="participantsItem">
-        <div class="parname">赵星星</div>
+      <router-link :to="{name:'socialsecurity',query:{id:item.id,name:item.name}}" class="participantsItem"
+                   v-for="(item,index) in
+      partic">
+        <div class="parname">{{item.name }}</div>
         <div class="paraddress">
           <p>城镇户口</p>
           <p>广东·深圳市福田区泰然四路</p>
@@ -9,7 +11,7 @@
         <div class="parjzb">
           <img class="cz_img" src="static/images/myparticipants/jzbImg.png" alt="">
         </div>
-      </div>
+      </router-link>
       <router-link :to="{name:'addinsurers'}" class="addpar">
         <img src="static/images/myparticipants/paradd.png" alt="">
         <p>添加参保人</p>
@@ -19,7 +21,36 @@
 
 <script>
     export default {
-        name: "participantslist"
+        name: "participantslist",
+        data(){
+          return{
+            partic:[],
+          }
+        },
+        methods:{
+
+          getAccountList(){
+            let data = this.common.getsign()
+            let userInfo = JSON.parse(window.localStorage.getItem("userInfo"))
+            let that = this
+            $.ajax({
+              url: this.HOST + '/app/user/accountList',
+              type: "POST",
+              data: {
+                time: data.time,
+                sign: data.sign,
+                user_id:userInfo.id
+              },
+              dataType: "JSON",
+              success: function (r) {
+                that.partic = r.data
+              }
+            })
+          }
+        },
+        mounted() {
+          this.getAccountList()
+        }
     }
 </script>
 

@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <div>
-      <router-view/>
+     <keep-alive>
+       <router-view v-if="$route.meta.keepAlive"/>
+     </keep-alive>
+      <router-view v-if="!$route.meta.keepAlive"/>
       <NavFoot />
 
     </div>
@@ -126,6 +129,16 @@
     font-family:PingFangSC-Regular;
     color: #666;
   }
+  .fundtitle .van-checkbox__label{
+    font-size: .7rem;
+    font-family: PingFangSC-Regular;
+    color: #666;
+  }
+  .soctitle .van-checkbox__label{
+    font-size: .7rem;
+    font-family: PingFangSC-Regular;
+    color: #666;
+  }
   /*底部弹窗单选择按钮字体*/
   .educationradio .van-radio__label{
     font-size: .8rem;
@@ -140,6 +153,10 @@
   /*明细的手风琴效果改变padding*/
   .deletalist .van-collapse-item__content{
     padding:0 .8rem;
+  }
+  /*交社保第二步骤的字体颜色val*/
+  .social .van-field__body .van-field__control:disabled{
+    color: #333 !important;
   }
 
 </style>

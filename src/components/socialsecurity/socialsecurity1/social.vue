@@ -6,8 +6,14 @@
           <span>社保</span>
         </div>
         <div class="soctitle right-ssoctitle">
-          <img src="static/images/socialsecurity/checked.png" alt="">
-          <span>缴纳</span>
+          <van-checkbox v-model="checkedshebao" @click="shebaoClick1">
+            缴纳
+            <img
+              slot="icon"
+              slot-scope="props"
+              :src="props.checked ? icon.active : icon.inactive"
+            >
+          </van-checkbox>
         </div>
       </div>
       <van-divider />
@@ -17,15 +23,21 @@
             label="参保类型"
             right-icon="arrow"
             disabled
-            placeholder="深户一档（综合险）"
+            :placeholder="levelName"
             @click-right-icon="getInsured"
+            label-width="50%"
+            input-align="right"
+            :value="levelNameVal"
+            label-class="col333"
           />
           <van-field
             label="参保基数"
             right-icon="arrow"
             disabled
-            placeholder="¥ 2200.00"
+            placeholder="2200"
             @click-right-icon="getBase"
+            label-width="80%"
+            :value="ifBaseSize"
           />
           <van-field
             label="参保月份"
@@ -33,6 +45,7 @@
             disabled
             placeholder="2019-06 至 2019-08"
             @click-right-icon="getMonth"
+            label-width="50%"
           />
           <div class="payType">
             <div class="payTypeTop">
@@ -81,7 +94,7 @@
               <span>社保补缴</span>
             </div>
             <div class="soctitle right-ssoctitlebu">
-              <van-checkbox v-model="isPay">
+              <van-checkbox v-model="isPay" @click="isPayClick">
                 缴纳
                 <img
                   slot="icon"
@@ -89,6 +102,34 @@
                   :src="props.checked ? icon.active : icon.inactive"
                 >
               </van-checkbox>
+            </div>
+          </div>
+          <div class="isbujiao1" v-model="isbujiao1">
+            <van-divider />
+            <div class="costSubtotal ">
+              <div>
+                <van-field
+                  label="参保月份"
+                  right-icon="arrow"
+                  disabled
+                  placeholder="2019-06 至 2019-08"
+                  @click-right-icon="getMonth1"
+                  label-width="50%"
+                />
+              </div>
+              <div class="ps-socF97 delpd5">当前城市允许补缴3个月</div>
+            </div>
+            <van-divider />
+            <div class="costSubtotal">
+              <router-link :to="{name:'socialsecuritydetailed'}" class="costSubtotalTop">
+                <div class="cosMoney">费用小计</div>
+                <div class="cosMoneyInfo">
+                  <span>¥ 2858.25</span>
+                  <span>明细</span>
+                  <img src="static/images/socialsecurity/youjiantou.png" alt="">
+                </div>
+              </router-link>
+              <div class="ps-socF97">注：当前城市社保强制缴纳，公积金可选</div>
             </div>
           </div>
         </van-cell-group>
@@ -103,8 +144,9 @@
         <div class="addeducation">
           <div class="educationradio">
             <van-radio-group v-model="insuredId">
-              <van-radio :name="index" v-for="(item, index) in insured">
-                {{item.name}}
+              <van-radio :name="index + 1" @click="getNameandLevel(item.level_name,item.level)" v-for="(item, index) in
+              insured">
+                {{item.level_name}}
                 <img
                   slot="icon"
                   slot-scope="props"
@@ -118,7 +160,7 @@
         <p class="ps-soc1">注：参保类型一经确认不能随意变更，请慎重选择！</p>
         <div class="addBtn">
           <div @click="cancel">取消</div>
-          <div @click="confirm">确定</div>
+          <div @click="insuredConfirm">确定</div>
         </div>
       </van-popup>
       <van-popup
@@ -129,14 +171,23 @@
         <h2 class="up-title">请输入参保基数</h2>
         <div class="addeducation">
           <div class="ginsenBase">
-            <van-field
+            <van-field v-if="minSocial == false"
               type="text"
               label="请输入参保基数"
               placeholder="2200~27927"
               label-width="50%"
               label-class="labelBase"
+              v-model="ifBaseSize"
             />
-            <van-checkbox v-model="checkedBase">
+            <van-field v-else
+               type="text"
+               :label="ifBaseSize1"
+               placeholder=""
+               label-width="50%"
+               label-class="labelBaseCol"
+               disabled
+            />
+            <van-checkbox v-model="minBase" @click="minSocialClick1">
               选择最低基数
               <img
                 slot="icon"
@@ -149,7 +200,7 @@
         <p class="ps-soc11">注：参保类型一经确认不能随意变更，请慎重选择！</p>
         <div class="addBtn">
           <div @click="cancel">取消</div>
-          <div @click="confirm">确定</div>
+          <div @click="minBaseConfirm">确定</div>
         </div>
       </van-popup>
       <van-popup
@@ -163,6 +214,29 @@
           <div class="ginsenBase">
             <van-datetime-picker
               v-model="currentDate"
+              type="year-month"
+              :min-date="minDate"
+              :formatter="formatter"
+              :show-toolbar="showToolbar"
+            />
+          </div>
+        </div>
+        <div class="addBtn1">
+          <div @click="cancel">取消</div>
+          <div @click="shebaoConfirm">确定</div>
+        </div>
+      </van-popup>
+      <van-popup
+        v-model="ginsenMonth1"
+        round
+        position="bottom"
+        :style="{ height: '18.575rem' }">
+        <h2 class="up-title">参保月份</h2>
+        <van-divider hairline/>
+        <div class="addeducation">
+          <div class="ginsenBase">
+            <van-datetime-picker
+              v-model="currentDate1"
               type="year-month"
               :min-date="minDate"
               :formatter="formatter"
@@ -186,31 +260,36 @@
             insuredType:false,
             ginsenBase:false,
             ginsenMonth:false,
-            currentDate: new Date(),
+            ginsenMonth1:false,
+            currentDate:new Date(),
+            currentDate1: new Date(),
+            currentDate2: new Date(),
             minDate: new Date(),
-            checkedBase:0,
+            checkedshebao:true,
+            checkedBase:1,
             insuredId:0,
+            ifBaseSize:"",
+            ifBaseSize1:'',
             payRadio:1,
+            minBaseNum:"2200",
+            minSocial:false,
             showToolbar:false,
             isPay:false,
+            minBase:0,
+            level_name:'',
+            levelNameVal:'',
+            baseVal:'',
+            levelName:'深户一档（综合险）',
+            level:'',
+            isbujiao1:false,
             insured:[
-              {
-                name:'深户一档（综合险）'
-              },
-              {
-                name:'深户一档（综合险）'
-              },
-              {
-                name:'深户一档（综合险）'
-              },
-              {
-                name:'深户一档（综合险）'
-              }
             ],
             icon: {
-              active: 'static/images/coverage/select.png',
+              active: 'static/images/socialsecurity/checked.png',
               inactive: 'static/images/coverage/unselect.png'
             },
+            monthId:JSON.parse(window.localStorage.getItem('monthId'))[0],
+            cityId:JSON.parse(window.localStorage.getItem('city1'))[0],
           }
       },
       methods:{
@@ -222,13 +301,56 @@
         },
         //确定
         confirm(){
+
+
+        },
+        //类型确定
+        insuredConfirm(){
           this.insuredType = false
+          let levels = JSON.parse(window.localStorage.getItem("levels"))
+          this.levelNameVal = levels.name
+        },
+        // 最低基数
+        minBaseConfirm(){
           this.ginsenBase = false
+          if(this.ifBaseSize < 2200){
+            this.ifBaseSize = 2200
+          }else if(this.ifBaseSize >30000){
+            this.ifBaseSize = 30000
+          }
+
+
+        },
+        // 社保参保月份
+        shebaoConfirm(type, value){
           this.ginsenMonth = false
+
+        },
+        getNameandLevel(name,level){
+          let levels = {
+            level:level,
+            name:name
+          }
+         window.localStorage.setItem("levels",JSON.stringify(levels))
         },
         //获取参保类型
         getInsured(){
-          this.insuredType = true
+          let that = this
+          this.insuredType = true;
+          let data = this.common.getsign()
+          $.ajax({
+            url: this.HOST+'/app/common/getcityLevel',
+            type : "POST",
+            data : {
+              sign:data.sign,
+              time:data.time,
+              city_id:77,
+            },
+            dataType : "JSON",
+            success : function(r) {
+              that.insured = r.data
+            }
+          })
         },
         //获取基数
         getBase(){
@@ -246,8 +368,78 @@
           }
           return value;
         },
+        getMonth1() {
+         this.ginsenMonth1 = true
+        },
+        isPayClick(){
+          this.isbujiao1 = true
+          if(this.isPay == true){
+            $('.isbujiao1').css({
+              display:'none'
+            })
+          }else {
+            $('.isbujiao1').css({
+              display:'block'
+            })
+          }
+        },
+        shebaoClick1(){
+          if(this.checkedshebao == true){
+            $('.socialgroup').css({
+              display:'none'
+            })
+          }else {
+            $('.socialgroup').css({
+              display:'block'
+            })
+          }
+        },
+        minSocialClick1(){
+          if(this.minBase == false){
+            this.minSocial = true
+          }else {
+            this.minSocial = false
+          }
+          this.minBaseNum
+          let that = this
+          let data = this.common.getsign()
+          $.ajax({
+            url: this.HOST+'/app/index/getCity',
+            type : "POST",
+            data : {
+              sign:data.sign,
+              time:data.time,
+              id:77,
+            },
+            dataType : "JSON",
+            success : function(r) {
+              that.ifBaseSize1 = r.data.social_min_money
+              console.log(that.ifBaseSize)
+            }
+          })
+        }
+
+      },
+      mounted(){
+        let that = this
+        let data = this.common.getsign()
+        if(this.isPay == false){
+          $('.isbujiao1').css({
+            display:'none'
+          })
+        }
+        if(this.checkedshebao == false){
+          $('.socialgroup').css({
+            display:'none'
+          })
+        }
+        // this.minBaseNum = 2200
+      },
+
+      created() {
 
       }
+
     }
 </script>
 
@@ -261,6 +453,13 @@
   .social .van-divider{
     margin: 0;
   }
+  .delpd5{
+    padding-top: 0 !important;
+  }
+  .col333{
+    color: #333 !important;
+  }
+
   .ps-soc11{
     font-size:.6rem;
     font-family:PingFangSC-Medium;

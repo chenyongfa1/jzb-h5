@@ -9,7 +9,7 @@
             <span>参保人</span>
           </div>
           <div class="participantsRight">
-            <span>请选择参保人</span>
+            <span v-if="this.name == undefined? this.name='请选择参保人':this.name">{{name}}</span>
             <img src="../../../static/images/socialsecurity/youjiantou.png" alt="">
           </div>
         </router-link>
@@ -20,7 +20,7 @@
               <span class="parLftemty">
                 <img src="../../../static/images/socialsecurity/localtion.png" alt="">
               </span>
-              <span>参保城市</span>
+              <span >参保城市</span>
             </div>
             <div class="participantsRight">
               <span class="addInfo">{{addrInfo}}</span>
@@ -52,15 +52,19 @@
             areaList:[],
             show:false,
             cityIdArr : [],
+            cityIdArr1 : [],
             addrInfo:"请选择参保城市",
             columns1: [
             ],
+            userinfo:'',
+            name:"",
+            firstSecurity:{
+              particpantsuserId:'',
+              particpantscityId:'',
+              particpantscity:'请选择参保城市'
+            }
           }
       },
-      computed: {
-
-      },
-
       methods:{
         onChange(picker, values) {
           picker.setColumnValues(1, citys[values[0]]);
@@ -70,10 +74,10 @@
             .then((res)=>{
               for (const item of res.data.data) {
                 this.cityIdArr.push(item.id)
-                citys[item.area_name] = item.item.map(item => item.area_name)
+                citys[item.area_name] = item.item.map(item =>item.area_name)
+                this.cityIdArr1[item.id] = item.item.map(item =>item.id)
               }
             })
-          console.log()
             this.columns1= [
               {
                 values: Object.keys(citys),
@@ -92,16 +96,23 @@
           this.show = false
         },
         confirm(e,index){
-          this.addrInfo = e[0] + " " +e[1]
           this.show = false
-          console.log(this.cityIdArr[index[0]]);
+          this.cityIdArr[index[0]]
+          this.addrInfo = e[0] + " " +e[1]
+          this.cityIdArr[index[0]]
+          let city1 = this.cityIdArr1[this.cityIdArr[index[0]]][index[1]]
+          window.localStorage.setItem("city",JSON.stringify(this.cityIdArr[index[0]]))
+          window.localStorage.setItem("city1",JSON.stringify(city1))
         },
       },
       mounted() {
         this.getCity()
       },
       created() {
-
+        this.name = this.$route.query.name
+        // console.log(this.$route.query.id)
+        let priId = this.$route.query.id == undefined || this.$route.query.id
+        window.localStorage.setItem('particId',JSON.stringify(priId))
       }
     }
 </script>

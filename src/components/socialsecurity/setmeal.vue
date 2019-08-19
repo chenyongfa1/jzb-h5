@@ -163,6 +163,7 @@
       },
       setmealConfirm(){
         this.setmealShow = false
+
       },
       setCancel(){
         this.isMeal = false
@@ -183,6 +184,7 @@
           $('.set-meal').eq(3).addClass('borF97').siblings().removeClass('borF97')
           $('.set-meal').eq(3).find(".mealAct").removeClass('isnone').parents().siblings().find(".mealAct").addClass('isnone')
         }
+        window.localStorage.setItem('monthId',JSON.stringify(this.monthId))
       },
       setMeal(index){
         this.isMeal= true;

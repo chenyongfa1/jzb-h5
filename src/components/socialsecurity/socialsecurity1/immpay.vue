@@ -5,14 +5,19 @@
           <span>¥ 3518.25</span>
           <span>（不含服务费）</span>
         </div>
-        <div class="immediatelypay">立即参保</div>
+        <div @click="insuredBtn" class="immediatelypay">立即参保</div>
       </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: "immpay"
+        name: "immpay",
+        methods:{
+          insuredBtn(){
+            console.log(this)
+          }
+        }
     }
 </script>
 

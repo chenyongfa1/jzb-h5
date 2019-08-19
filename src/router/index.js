@@ -40,6 +40,7 @@ export default new Router({
         title:"缴社保",
         isTitle:true,
         isFootEmty:true,
+        keepAlive: true // 需要被缓存
       }
     },
     {
@@ -127,7 +128,8 @@ export default new Router({
         title:"补缴说明",
         isTitle:true,
         isRight:true,
-        isColor:false
+        isColor:false,
+        keepAlive: true // 需要被缓存
       }
     },
     {
@@ -152,6 +154,8 @@ export default new Router({
         isTitle:true,
         isColor:true,
         isFootEmty:true,
+        keepAlive: true // 需要被缓存
+
       }
     },
     {

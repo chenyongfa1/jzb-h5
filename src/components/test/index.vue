@@ -1,17 +1,24 @@
 <template>
     <div>
-      <van-area :area-list="areaList" :columns-num="2" title="标题" />
+      <components-a></components-a>
+      <components-b></components-b>
     </div>
 </template>
 
 <script>
+  import componentsA from './a'
+  import componentsB from './b'
     export default {
+        components:{
+          componentsA,
+          componentsB
+        },
         name: "index",
-      data(){
-          return{
+        data(){
+            return{
 
-          }
-      }
+            }
+        }
     }
 </script>
 
