@@ -31,21 +31,34 @@
             label-class="col333"
           />
           <van-field
+            label="起缴月份"
+            right-icon="arrow"
+            disabled
+            :placeholder="time1"
+            @click-right-icon="payOffMonth"
+            label-width="50%"
+            input-align="right"
+            :value="payOffVal"
+          />
+          <van-field
+            label="截止月份"
+            right-icon="arrow"
+            disabled
+            :placeholder="time1"
+            @click-right-icon="endMonth"
+            label-width="50%"
+            input-align="right"
+            :value="endVal"
+          />
+          <van-field
             label="参保基数"
             right-icon="arrow"
             disabled
             placeholder="2200"
             @click-right-icon="getBase"
-            label-width="80%"
-            :value="ifBaseSize"
-          />
-          <van-field
-            label="参保月份"
-            right-icon="arrow"
-            disabled
-            placeholder="2019-06 至 2019-08"
-            @click-right-icon="getMonth"
             label-width="50%"
+            :value="ifBaseSize"
+            input-align="right"
           />
           <div class="payType">
             <div class="payTypeTop">
@@ -77,14 +90,14 @@
           </div>
           <van-divider />
           <div class="costSubtotal">
-            <router-link :to="{name:'socialsecuritydetailed'}" class="costSubtotalTop">
+            <div class="costSubtotalTop" @click="toSocialDetail">
               <div class="cosMoney">费用小计</div>
               <div class="cosMoneyInfo">
-                <span>¥ 2858.25</span>
+                <span>￥{{payInfo1}}</span>
                 <span>明细</span>
                 <img src="static/images/socialsecurity/youjiantou.png" alt="">
               </div>
-            </router-link>
+            </div>
             <div class="ps-socF97">注：当前城市社保强制缴纳，公积金可选</div>
           </div>
           <van-divider />
@@ -109,27 +122,41 @@
             <div class="costSubtotal ">
               <div>
                 <van-field
-                  label="参保月份"
+                  label="补缴月数"
                   right-icon="arrow"
                   disabled
-                  placeholder="2019-06 至 2019-08"
                   @click-right-icon="getMonth1"
+                  placeholder="请选择补缴月数"
                   label-width="50%"
+                  input-align="right"
+                  label-class="col333"
+                  :value="paybackVal"
                 />
               </div>
-              <div class="ps-socF97 delpd5">当前城市允许补缴3个月</div>
+              <div>
+                <van-field
+                  label=""
+                  disabled
+                  :placeholder="time1"
+                  input-align="right"
+                  label-class="col333"
+                  right-icon="emty"
+                  :value="showPayBackNum"
+                />
+              </div>
+              <div class="ps-socF97 delpd5">当前城市允许补缴{{cityInfo.payback_mount}}个月</div>
             </div>
             <van-divider />
             <div class="costSubtotal">
-              <router-link :to="{name:'socialsecuritydetailed'}" class="costSubtotalTop">
+              <div class="costSubtotalTop">
                 <div class="cosMoney">费用小计</div>
                 <div class="cosMoneyInfo">
                   <span>¥ 2858.25</span>
                   <span>明细</span>
                   <img src="static/images/socialsecurity/youjiantou.png" alt="">
                 </div>
-              </router-link>
-              <div class="ps-socF97">注：当前城市社保强制缴纳，公积金可选</div>
+              </div>
+              <div class="ps-socF97">注：补缴应购买当月社保，补缴费{{cityInfo.pay_back_price}}元/次</div>
             </div>
           </div>
         </van-cell-group>
@@ -172,16 +199,16 @@
         <div class="addeducation">
           <div class="ginsenBase">
             <van-field v-if="minSocial == false"
-              type="text"
+              type="number"
               label="请输入参保基数"
-              placeholder="2200~27927"
+              placeholder="2200~30000"
               label-width="50%"
               label-class="labelBase"
               v-model="ifBaseSize"
             />
             <van-field v-else
                type="text"
-               :label="ifBaseSize1"
+               :label="ifBaseSize"
                placeholder=""
                label-width="50%"
                label-class="labelBaseCol"
@@ -208,7 +235,7 @@
         round
         position="bottom"
         :style="{ height: '18.575rem' }">
-        <h2 class="up-title">参保月份</h2>
+        <h2 class="up-title">起始月份</h2>
         <van-divider hairline/>
         <div class="addeducation">
           <div class="ginsenBase">
@@ -227,16 +254,16 @@
         </div>
       </van-popup>
       <van-popup
-        v-model="ginsenMonth1"
+        v-model="ginsenMonth2"
         round
         position="bottom"
         :style="{ height: '18.575rem' }">
-        <h2 class="up-title">参保月份</h2>
+        <h2 class="up-title">截止月份</h2>
         <van-divider hairline/>
         <div class="addeducation">
           <div class="ginsenBase">
             <van-datetime-picker
-              v-model="currentDate1"
+              v-model="currentDate3"
               type="year-month"
               :min-date="minDate"
               :formatter="formatter"
@@ -246,8 +273,26 @@
         </div>
         <div class="addBtn1">
           <div @click="cancel">取消</div>
-          <div @click="confirm">确定</div>
+          <div @click="shebaoConfirm1">确定</div>
         </div>
+      </van-popup>
+      <van-popup
+        v-model="setMonth"
+        round
+        position="bottom"
+        :style="{ height: '50%' }">
+        <div class="addeducation">
+          <div class="ginsenBase">
+            <van-picker
+              show-toolbar
+              title="补缴月数"
+              :columns="columns"
+              @cancel="cancel"
+              @confirm="setMonthConfirm"
+            />
+          </div>
+        </div>
+        <div class="ps-soc11 bujiaops">补缴不支持隔月补，须与正常申报月份一同参保</div>
       </van-popup>
     </div>
 </template>
@@ -261,16 +306,24 @@
             ginsenBase:false,
             ginsenMonth:false,
             ginsenMonth1:false,
+            ginsenMonth2:false,
+            scopeOfCoverage:"",
             currentDate:new Date(),
             currentDate1: new Date(),
             currentDate2: new Date(),
+            currentDate3:new Date(),
             minDate: new Date(),
             checkedshebao:true,
+            paybackVal:'',
             checkedBase:1,
+            time1:'请选择时间',
             insuredId:0,
             ifBaseSize:"",
             ifBaseSize1:'',
-            payRadio:1,
+            bujiaoMonth:'',
+            bujiaoRange:'',
+            setMonth:false,
+            payRadio:"1",
             minBaseNum:"2200",
             minSocial:false,
             showToolbar:false,
@@ -282,8 +335,13 @@
             levelName:'深户一档（综合险）',
             level:'',
             isbujiao1:false,
-            insured:[
-            ],
+            endVal:'',
+            payOffVal:'',
+            cityInfo:{},
+            insured:[],
+            showPayBackNum:'',
+            payInfo1:"0",
+            columns: ['1个月', '2个月', '3个月', '4个月', '5个月','6个月', '7个月', '8个月','9个月', '10个月','11个月', '12个月'],
             icon: {
               active: 'static/images/socialsecurity/checked.png',
               inactive: 'static/images/coverage/unselect.png'
@@ -298,6 +356,8 @@
           this.insuredType = false
           this.ginsenBase = false
           this.ginsenMonth = false
+          this.ginsenMonth2 = false
+          this.setMonth = false
         },
         //确定
         confirm(){
@@ -312,19 +372,98 @@
         },
         // 最低基数
         minBaseConfirm(){
-          this.ginsenBase = false
-          if(this.ifBaseSize < 2200){
-            this.ifBaseSize = 2200
-          }else if(this.ifBaseSize >30000){
-            this.ifBaseSize = 30000
+          let payOfTime = JSON.parse(window.localStorage.getItem('payOfTime'))
+          let payOfTime1 = JSON.parse(window.localStorage.getItem('payOfTime1'))
+          if(this.ifBaseSize != ""){
+            if(this.ifBaseSize < 2200){
+              this.ifBaseSize = 2200
+            }else if(this.ifBaseSize >30000){
+              this.ifBaseSize = 30000
+            }
+            if(this.payOffVal != "" &&  this.endVal != ""){
+              if(payOfTime1.getFullYear >= payOfTime.getFullYear){
+                if(payOfTime1.getFullYear == payOfTime.getFullYear ){
+                  if(payOfTime1.getMonth < payOfTime.getMonth){
+                    this.$toast({
+                      message:'开始日期不能大于其实日期'
+                    })
+                  }else {
+                    this.ginsenBase = false
+                    this.payInfo1 = 1
+                    /*let data = this.common.getsign()
+                    let cityId = JSON.parse(window.localStorage.getItem('city1'))
+                    $.ajax({
+                      url: this.HOST+'/app/common/getcityLevel',
+                      type : "POST",
+                      data : {
+                        sign:data.sign,
+                        time:data.time,
+                        city_id:cityId,
+                      },
+                      dataType : "JSON",
+                      success : function(r) {
+                        that.insured = r.data
+                      }
+                    })*/
+                  }
+                }
+              }
+            }else {
+              this.$toast({
+                message:'请输入参保月数'
+              })
+            }
+          }else {
+            this.$toast({
+              message:'请输入基数'
+            })
+          }
+        },
+        // 补缴月数确认
+        setMonthConfirm(value){
+          let time = this.nowTime()
+          if(parseInt(value)>this.cityInfo.payback_mount){
+            this.$toast({
+              message:'补缴月数超出当前城市可补缴范围，请重新选择'
+            })
+          }else {
+            this.setMonth = false
+            this.paybackVal = value
+            if((time.month-this.cityInfo.payback_mount)<1){
+              let payBackMonth = (Number(time.month)-1)+12-(this.cityInfo.payback_mount);
+              let payBackYear = Number(time.year)-1
+              this.showPayBackNum = payBackYear + '-' + this.zero(payBackMonth)+ ' 至 ' + time.year + '-'
+                +this.zero((time.month-1))
+            }else {
+              let payBackMonth = (Number(time.month)-1)-(this.cityInfo.payback_mount);
+              this.showPayBackNum = time.year + '-' + this.zero(payBackMonth) + ' 至 ' + time.year + '-'
+                +this.zero((time.month-1))
+            }
           }
 
 
         },
         // 社保参保月份
-        shebaoConfirm(type, value){
+        shebaoConfirm(){
           this.ginsenMonth = false
+          let nowTime = this.currentDate.getFullYear() + '-'+ this.zero((this.currentDate.getMonth()+1))
+          this.payOffVal = nowTime
+          let payOfTime ={
+            getFullYear:this.currentDate.getFullYear(),
+            getMonth:this.currentDate.getMonth()+1,
+          };
 
+          window.localStorage.setItem('payOfTime',JSON.stringify(payOfTime))
+        },
+        shebaoConfirm1(){
+          this.ginsenMonth2 = false
+          let nowTime = this.currentDate3.getFullYear() + '-'+ this.zero((this.currentDate3.getMonth()+1))
+          this.endVal = nowTime
+          let payOfTime1 ={
+            getFullYear:this.currentDate3.getFullYear(),
+            getMonth:this.currentDate3.getMonth()+1,
+          };
+          window.localStorage.setItem('payOfTime1',JSON.stringify(payOfTime1))
         },
         getNameandLevel(name,level){
           let levels = {
@@ -338,13 +477,14 @@
           let that = this
           this.insuredType = true;
           let data = this.common.getsign()
+          let cityId = JSON.parse(window.localStorage.getItem('city1'))
           $.ajax({
             url: this.HOST+'/app/common/getcityLevel',
             type : "POST",
             data : {
               sign:data.sign,
               time:data.time,
-              city_id:77,
+              city_id:cityId,
             },
             dataType : "JSON",
             success : function(r) {
@@ -352,13 +492,49 @@
             }
           })
         },
+        // 跳转明细页面
+        toSocialDetail(){
+          if(this.payInfo1 > 0){
+            this.$router.push({
+              name:"socialsecuritydetailed",
+              params:{}
+            });
+          }
+
+        },
         //获取基数
         getBase(){
           this.ginsenBase = true
+          this.getCityInfo()
         },
+        getCityInfo(){
+          let that = this
+          let data = this.common.getsign()
+          let cityId = JSON.parse(window.localStorage.getItem('city1'))
+          $.ajax({
+            url: this.HOST+'/app/index/getCity',
+            type : "POST",
+            data : {
+              sign:data.sign,
+              time:data.time,
+              id:cityId,
+            },
+            dataType : "JSON",
+            success : function(r) {
+              that.cityInfo = r.data
+            }
+          })
+        },
+
         //获取月数
         getMonth(){
+
+        },
+        payOffMonth(){
           this.ginsenMonth = true
+        },
+        endMonth(){
+          this.ginsenMonth2 = true
         },
         formatter(type, value) {
           if (type === 'year') {
@@ -369,7 +545,7 @@
           return value;
         },
         getMonth1() {
-         this.ginsenMonth1 = true
+         this.setMonth = true
         },
         isPayClick(){
           this.isbujiao1 = true
@@ -394,6 +570,7 @@
             })
           }
         },
+
         minSocialClick1(){
           if(this.minBase == false){
             this.minSocial = true
@@ -401,39 +578,42 @@
             this.minSocial = false
           }
           this.minBaseNum
+          this.ifBaseSize  =this.cityInfo.social_min_money
+        },
+        zero(n){
+          if(n>9){
+            return n
+          }else {
+            return "0"+n;
+          }
+        },
+        nowTime(){
+          let date = new Date()
+          let time = {}
+          time.year = date.getFullYear()
+          time.month = this.zero(date.getMonth()+1)
+          return time
+        },
+        showCon(){
           let that = this
           let data = this.common.getsign()
-          $.ajax({
-            url: this.HOST+'/app/index/getCity',
-            type : "POST",
-            data : {
-              sign:data.sign,
-              time:data.time,
-              id:77,
-            },
-            dataType : "JSON",
-            success : function(r) {
-              that.ifBaseSize1 = r.data.social_min_money
-              console.log(that.ifBaseSize)
-            }
-          })
+          if(this.isPay == false){
+            $('.isbujiao1').css({
+              display:'none'
+            })
+          }
+          if(this.checkedshebao == false){
+            $('.socialgroup').css({
+              display:'none'
+            })
+          }
         }
 
       },
       mounted(){
-        let that = this
-        let data = this.common.getsign()
-        if(this.isPay == false){
-          $('.isbujiao1').css({
-            display:'none'
-          })
-        }
-        if(this.checkedshebao == false){
-          $('.socialgroup').css({
-            display:'none'
-          })
-        }
-        // this.minBaseNum = 2200
+        this.getCityInfo()
+        this.showCon()
+
       },
 
       created() {
@@ -459,7 +639,10 @@
   .col333{
     color: #333 !important;
   }
-
+  .bujiaops{
+    padding-top: 1rem;
+    text-align: center;
+  }
   .ps-soc11{
     font-size:.6rem;
     font-family:PingFangSC-Medium;

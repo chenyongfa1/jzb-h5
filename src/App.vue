@@ -158,5 +158,11 @@
   .social .van-field__body .van-field__control:disabled{
     color: #333 !important;
   }
+  .fund .van-field__body .van-field__control:disabled{
+    color: #333 !important;
+  }
+  .van-picker__confirm{
+    color:#F97A2E
+  }
 
 </style>

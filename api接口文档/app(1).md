@@ -353,6 +353,7 @@
 >### [新增参保人](http://www.jzbshebao.cn/app/user/addAccount)
 >|请求参数|说明|可选值|是否必须|类型|
 >|--|--|--|--|--|
+>|user_id|用户ID|--|Y|int|
 >|id_front|身份证正面|--|Y|string|
 >|id_back|身份证背面|--|Y|string|
 >|name|姓名|--|Y|string|
@@ -606,7 +607,88 @@
 >>>        "balance": "0.00"
 >>>    }
 >>>}
->>>
+>>>```
 
+---
+
+>### [我的参保人](http://www.jzbshebao.cn/app/user/accountList)
+>|请求参数|说明|可选值|是否必须|类型|
+>|--|--|--|--|--|
+>|user_id|用户ID|--|Y|int|
+>
+>>***返回数据说明***
+>>>|返回数据|说明|
+>>>|--|--|
+>>>|status|接口返回状态|
+>>>|message|接口返回信息|
+>>>|data|接口数据array|
+>>>|data>id|参保人ID|
+>>>|data>name|参保人名|
+>
+>>**返回示例**
+>>>```
+>>>{
+>>>    "status": 200,
+>>>    "message": "获取数据成功",
+>>>    "data": [
+>>>        {
+>>>            "id": "2",
+>>>            "name": "的撒的"
+>>>        }
+>>>    ]
+>>>}
+>>>```
+
+---
+
+>### [缴费明细](http://www.jzbshebao.cn/app/order/sumDetail)
+>|请求参数|说明|可选值|是否必须|类型|
+>|--|--|--|--|--|
+>|city_id|城市ID|--|Y|int|
+>|level|缴费等级|--|Y|int|
+>|social|缴费基数|--|Y|int|
+>|start|开始时间|--|Y|string|
+>|end|截至时间|--|Y|string|
+>|type|类型 1社保 2公积金|--|Y|int|
+>
+>>***返回数据说明***
+>>>|返回数据|说明|
+>>>|--|--|
+>>>|status|接口返回状态|
+>>>|message|接口返回信息|
+>>>|data|接口数据array|
+>>>|data>2019-10|参保月份|
+>>>|data>2019-10>personal_subtotal|个人小计|
+>>>|data>2019-10>company_subtotal|公司小计|
+>>>|data>2019-10>service_name|险种|
+>>>|data>2019-10>personal_price|个人缴费|
+>>>|data>2019-10>company_price|公司缴费|
+>>>|data>total|总计|
+>>>|data>social|参保基数|
+>
+>>**返回示例**
+>>>```
+>>>{
+>>>    "status": 200,
+>>>    "message": "获取数据成功",
+>>>    "data": {
+>>>        "2019-10": {
+>>>            "0": {
+>>>                "personal_percentage": "0.30",
+>>>                "company_percentage": "0.70",
+>>>                "level_name": "深户一档",
+>>>                "service_name": "失业保险",
+>>>                "min_money": "0.00",
+>>>                "personal_price": "6.6",
+>>>                "company_price": "15.4"
+>>>            },
+>>>            "personal_subtotal": 316.8,
+>>>            "company_subtotal": 680.305
+>>>        },
+>>>        "total": 997.105,
+>>>        "social": 2200
+>>>    }
+>>>}
+>>>```
 
 

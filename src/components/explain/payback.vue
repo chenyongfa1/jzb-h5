@@ -39,10 +39,9 @@
         </div>
       </div>
       <div class="retention pd16">
-        <div class="paybacktitle">怎么提交补缴订单</div>
+        <div class="paybacktitle">滞留金</div>
         <p class="retentionfee">因当地政策原因，导致部分城市补缴会产生周滞留金，社保管家与您联系后，需要您及时支付补差单，同时滞留金费用和补缴政策如有变动，已社保局政策为准。</p>
       </div>
-      <van-button @click="goto" size="large" class="goBut" type="default">去补缴</van-button>
     </div>
   </div>
 </template>
