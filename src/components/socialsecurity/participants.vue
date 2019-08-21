@@ -9,7 +9,7 @@
             <span>参保人</span>
           </div>
           <div class="participantsRight">
-            <span v-if="this.name == undefined? this.name='请选择参保人':this.name">{{name}}</span>
+            <span  v-if="this.name == undefined? this.name='请选择参保人':this.name">{{name}}</span>
             <img src="../../../static/images/socialsecurity/youjiantou.png" alt="">
           </div>
         </router-link>
@@ -78,13 +78,14 @@
                 this.cityIdArr1[item.id] = item.item.map(item =>item.id)
               }
             })
+          console.log(citys)
             this.columns1= [
               {
                 values: Object.keys(citys),
                 className: 'column1'
               },
               {
-                values: citys['浙江'],
+                values: citys["浙江"],
                 className: 'column2',
               },
             ]
@@ -110,7 +111,7 @@
       },
       created() {
         this.name = this.$route.query.name
-        // console.log(this.$route.query.id)
+        console.log(this.$route.query.id)
         let priId = this.$route.query.id == undefined || this.$route.query.id
         window.localStorage.setItem('particId',JSON.stringify(priId))
       }
@@ -166,7 +167,7 @@
     height: 1rem;
     font-size:.6rem;
     font-family:PingFangSC-Regular;
-    color: #999999;
+    color: #333;
     vertical-align: middle;
   }
 

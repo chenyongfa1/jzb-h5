@@ -1,6 +1,7 @@
 <template>
     <div class="participantslist">
-      <router-link :to="{name:'socialsecurity',query:{id:item.id,name:item.name}}" class="participantsItem"
+      <router-link :to="{name:'socialsecurity',query:{name:item.name,id:item.id}}" @click="addName(item.name,item.id)"
+                   class="participantsItem"
                    v-for="(item,index) in
       partic">
         <div class="parname">{{item.name }}</div>
@@ -46,7 +47,7 @@
                 that.partic = r.data
               }
             })
-          }
+          },
         },
         mounted() {
           this.getAccountList()

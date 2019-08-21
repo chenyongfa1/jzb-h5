@@ -82,14 +82,14 @@
           </div>
           <van-divider />
           <div class="costSubtotal">
-            <router-link :to="{name:'funddetailed'}" class="costSubtotalTop">
+            <div class="costSubtotalTop" @click="toSocialDetail">
               <div class="cosMoney">费用小计</div>
               <div class="cosMoneyInfo">
-                <span>¥ 2858.25</span>
+                <span>¥{{payInfo1}}</span>
                 <span>明细</span>
                 <img src="static/images/socialsecurity/youjiantou.png" alt="">
               </div>
-            </router-link>
+            </div>
           </div>
           <van-divider />
           <div class="social-titleBu">
@@ -113,7 +113,7 @@
             <div class="costSubtotal ">
               <div>
                 <van-field
-                  label="参保月份"
+                  label="参保月数"
                   right-icon="arrow"
                   disabled
                   :placeholder="time1"
@@ -121,6 +121,7 @@
                   label-width="50%"
                   input-align="right"
                   label-class="col333"
+                  :value="paybackVal"
                 />
               </div>
               <div>
@@ -134,18 +135,18 @@
                   :value="showPayBackNum"
                 />
               </div>
-              <div class="ps-socF97 delpd5">当前城市允许补缴{{cityInfo.payback_mount}}个月</div>
+              <div class="ps-socF97 delpd5">当前城市允许补缴{{cityInfo.pay_back_mount}}个月</div>
             </div>
             <van-divider />
             <div class="costSubtotal">
-              <router-link :to="{name:'funddetailed'}" class="costSubtotalTop">
+              <div class="costSubtotalTop">
                 <div class="cosMoney">费用小计</div>
                 <div class="cosMoneyInfo">
-                  <span>¥ 2858.25</span>
+                  <span>¥{{payBackPrice}}</span>
                   <span>明细</span>
                   <img src="static/images/socialsecurity/youjiantou.png" alt="">
                 </div>
-              </router-link>
+              </div>
               <div class="ps-socF97">注：补缴应购买当月社保，补缴费{{cityInfo.pay_back_price}}元/次</div>
             </div>
           </div>
@@ -272,16 +273,20 @@
             checkedBase:false,
             minBase:false,
             insuredId:0,
-            payRadio:1,
+            payRadio:"1",
             showToolbar:false,
             isPay3:false,
             isPay2:false,
+            payInfo1:'0',
             isPay1:true,
             endVal:'',
             payOffVal:'',
             paybackVal:'',
             ifBaseSize:"",
             setMonth:false,
+            toShow:false,
+            toShow1:false,
+            payBackPrice:'0',
             cityInfo:'',
             time1:'请选择时间',
             columns: ['1个月', '2个月', '3个月', '4个月', '5个月','6个月', '7个月', '8个月','9个月', '10个月','11个月', '12个月'],
@@ -327,75 +332,139 @@
             }
           })
         },
+        // 明细接口
+        getDetail(level,social,start,end,payType){
+          let type = ""
+          this.ginsenBase = false
+          this.toShow = true
+          if(type=1){
+            this.toShow= true
+          }else {
+            this.toShow1= true
+          }
+          if (this.ifBaseSize <= this.cityInfo.accumulation_min_money) {
+            this.ifBaseSize = this.cityInfo.accumulation_min_money
+          } else if (this.ifBaseSize >= this.cityInfo.accumulation_max_money) {
+            this.ifBaseSize = this.cityInfo.accumulation_max_money
+          }
+          let that = this
+          let data = this.common.getsign()
+          let cityId = JSON.parse(window.localStorage.getItem('city1'))
+          $.ajax({
+            url: this.HOST + '/app/order/sumDetail',
+            type: "POST",
+            data: {
+              sign: data.sign,
+              time: data.time,
+              city_id: cityId,
+              level: level,
+              social: social,
+              start: start,
+              end: end,
+              type: 2,
+              pay_type:payType,
+            },
+            dataType: "JSON",
+            success: function (r) {
+              that.payInfo1 = r.data.total
+              that.payBackPrice = r.data.pay_back_price
+            }
+          })
+        },
+        // 跳转明细页面
+        toSocialDetail() {
+          if (this.toShow) {
+            this.$router.push({
+              name: "funddetailed",
+              params: {}
+            });
+          }
+
+        },
         // 最低基数
-        minBaseConfirm(){
+        minBaseConfirm() {
           let payOfTime = JSON.parse(window.localStorage.getItem('payOfTime2'))
           let payOfTime1 = JSON.parse(window.localStorage.getItem('payOfTime3'))
-          if(this.ifBaseSize != ""){
-            if(this.ifBaseSize < 2200){
-              this.ifBaseSize = 2200
-            }else if(this.ifBaseSize >30000){
-              this.ifBaseSize = 30000
-            }
-            if(this.payOffVal != "" && this.endVal != ""){
-              if(payOfTime1.getFullYear >= payOfTime.getFullYear){
-                if(payOfTime1.getFullYear == payOfTime.getFullYear ){
-                  if(payOfTime1.getMonth < payOfTime.getMonth){
+          let nowTime = this.nowTime()
+          let payType = "2"
+          if (this.ifBaseSize != "") {
+            if (this.payOffVal != "" && this.endVal != "") {
+              // 判断起始年份大于截止年份
+              if (payOfTime1.getFullYear > payOfTime.getFullYear) {
+                let type = 1;
+                this.getDetail(this.insuredId, this.ifBaseSize, this.payOffVal, this.endVal, payType)
+                //起始年份等于截止年份
+              } else if (payOfTime1.getFullYear == payOfTime.getFullYear) {
+                // 是否选择当前月
+                if (payOfTime.getFullYear == nowTime.year && payOfTime.getMonth == nowTime.month) {
+                  if (this.cityInfo.start_time > nowTime.day) {
+                    let type = 1;
+                    this.getDetail(this.insuredId, this.ifBaseSize, this.payOffVal, this.endVal,payType)
+                  } else {
                     this.$toast({
-                      message:'开始日期不能大于其实日期'
+                      message: '当月起缴月份已过，请选择下个月'
                     })
-                  }else {
-                    this.ginsenBase = false
-                    /*let data = this.common.getsign()
-                    let cityId = JSON.parse(window.localStorage.getItem('city1'))
-                    $.ajax({
-                      url: this.HOST+'/app/common/getcityLevel',
-                      type : "POST",
-                      data : {
-                        sign:data.sign,
-                        time:data.time,
-                        city_id:cityId,
-                      },
-                      dataType : "JSON",
-                      success : function(r) {
-                        that.insured = r.data
-                      }
-                    })*/
+                  }
+
+                } else {
+                  //起始月份等于截止月份
+                  if (payOfTime1.getMonth >= payOfTime.getMonth) {
+                    let type = 1;
+                    this.getDetail(this.insuredId, this.ifBaseSize, this.payOffVal, this.endVal, type)
+                    //起始月份等于截止月份
+                  } else {
+                    this.$toast({
+                      message: '起缴日期不能大于截止日期'
+                    })
                   }
                 }
+              } else {
+                this.$toast({
+                  message: '起缴日期不能大于截止日期'
+                })
               }
-            }else {
+            } else {
               this.$toast({
-                message:'请输入参保月数'
+                message: '请输入参保月数'
               })
             }
-          }else {
+          } else {
             this.$toast({
-              message:'请输入基数'
+              message: '请输入基数'
             })
           }
         },
         // 补缴月数确认
         setMonthConfirm(value){
           let time = this.nowTime()
-          if(parseInt(value)>this.cityInfo.payback_mount){
+          if(parseInt(value)>this.cityInfo.pay_back_mount){
             this.$toast({
               message:'补缴月数超出当前城市可补缴范围，请重新选择'
             })
           }else {
+            let payType = "2"
             this.setMonth = false
-            this.paybackVal = value
-            if((time.month-this.cityInfo.payback_mount)<1){
-              let payBackMonth = (Number(time.month)-1)+12-(this.cityInfo.payback_mount);
-              let payBackYear = Number(time.year)-1
-              this.showPayBackNum = payBackYear + '-' + this.zero(payBackMonth)+ ' 至 ' + time.year + '-'
-                +this.zero((time.month-1))
+            console.log(this.ifBaseSize)
+            if(this.ifBaseSize !=""){
+              this.paybackVal = value
+              if ((time.month - this.cityInfo.pay_back_mount) < 1) {
+                let payBackMonth = (Number(time.month)) + 12 - (this.cityInfo.pay_back_mount);
+                let payBackYear = Number(time.year) - 1
+                let startTime = payBackYear + '-' + this.zero(payBackMonth)
+                let startTime1 = time.year + '-'+ this.zero((time.month - 1))
+                this.showPayBackNum =startTime  + ' 至 ' + startTime1
+                this.getDetail(this.insuredId, this.ifBaseSize, startTime, startTime1,payType)
+              } else {
+                let payBackMonth = (Number(time.month)) - (this.cityInfo.pay_back_mount);
+                let startTime = time.year + '-' + this.zero(payBackMonth)
+                let startTime1 = time.year + '-' + this.zero((time.month - 1))
+                this.showPayBackNum = startTime + ' 至 ' + startTime1
+                this.getDetail(this.insuredId, this.ifBaseSize, startTime, startTime1,payType)
+              }
             }else {
-
-              let payBackMonth = (Number(time.month)-1)-(this.cityInfo.payback_mount);
-              console.log(Number(time.month)-1,this.cityInfo.payback_mount)
-              this.showPayBackNum = time.year + '-' + this.zero(payBackMonth) + ' 至 ' + time.year + '-'
-                +this.zero((time.month-1))
+              this.$toast({
+                message:"社保信息补全"
+              })
             }
           }
         },
@@ -423,6 +492,7 @@
           }
         },
         shebaoClick2(){
+          window.localStorage.setItem('fund',JSON.stringify(this.isPay2))
           if(this.isPay2 == true){
             $('.fundgroup').css({
               display:'none'
@@ -511,13 +581,15 @@
               display:'none'
             })
           }
-        }
+        },
       },
       mounted() {
         this.showCon()
         this.getCityInfo()
+        // this.toSocialDetail()
       },
       created() {
+        window.localStorage.setItem('fund',JSON.stringify(this.isPay2))
       }
     }
 </script>

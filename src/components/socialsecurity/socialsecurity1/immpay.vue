@@ -15,9 +15,18 @@
         name: "immpay",
         methods:{
           insuredBtn(){
-            console.log(this)
+            let social = JSON.parse(window.localStorage.getItem('social'))
+            let fund = JSON.parse(window.localStorage.getItem('fund'))
+            console.log(social,fund)
+            if (social == false || fund == false){
+
+            }else {
+              this.$toast({
+                message:'社保或公积金必选一项'
+              })
+            }
           }
-        }
+        },
     }
 </script>
 

@@ -42,7 +42,6 @@
     },
     methods: {
       nextStepBtn() {
-        let monthId = JSON.parse(window.localStorage.getItem('monthId'))
         if ($('.participantsRight span').html() == "请选择参保人") {
           this.$toast({
             message: '请选择参保人'
@@ -50,10 +49,6 @@
         }else if ($('.addInfo').html() == '请选择参保城市') {
           this.$toast({
             message: '请选择参保城市'
-          })
-        }else if (monthId == undefined) {
-          this.$toast({
-            message: '请选择参保月份'
           })
         }else {
           this.$router.push({

@@ -22,35 +22,17 @@
           <p class="set-downImg">
             <img src="../../../static/images/socialsecurity/upjiantou.png" alt="">
           </p>
-          <p class="mealAct isnone"><img src="../../../static/images/socialsecurity/mealact.png" alt=""></p>
+          <p class="mealAct"><img src="../../../static/images/socialsecurity/mealact.png" alt=""></p>
         </div>
+      </div>
+      <div>
+        <p class="ps-sm pd16">月份套餐：参保1-2个月 服务费为￥69.9/月 ，费用计算以实际选择参保月数（含补缴）为准。</p>
+        <p class="ps-con pd16">注：社保与公积金同时缴纳只收取一项服务费</p>
       </div>
     </div>
     <van-popup v-model="setmealShow"  position="bottom" :overlay="true">
       <van-picker show-toolbar title="参保月数" :columns="columns" @cancel="cancel" @confirm="setmealConfirm"  />
     </van-popup>
-    <div class="set-con">
-      <van-popup v-model="isMeal">
-        <div class="setbtn">
-          <p @click="setCancel">取消</p>
-          <p @click="setConfirm">确定</p>
-        </div>
-        <van-divider />
-        <div class="setradio">
-          <van-radio-group  v-model="monthId">
-            <van-radio  :change="getInfo" :name="item.index" v-for="(item, index) in month1[setIndex]">
-              <img
-                slot="icon"
-                slot-scope="props"
-                class="radioImg"
-                :src="props.checked ? icon.active : icon.inactive"
-              >
-              {{item.months}}
-            </van-radio>
-          </van-radio-group>
-        </div>
-      </van-popup>
-    </div>
   </div>
 </template>
 
@@ -66,6 +48,7 @@
         columns: ['一月', '二月', '三月'],
         isMeal:false,
         setmeal:[],
+        isShow:"1",
         month1:[
           [
             {
@@ -132,9 +115,6 @@
       }
     },
     methods:{
-      getInfo(e){
-        // console.log(e)
-      },
       getServiceCharge(){
         let data = this.common.getsign()
         let that = this
@@ -148,11 +128,11 @@
           dataType : "JSON",
           success : function(r) {
             that.setmeal = r.data
-            /*that.setmeal = r.data.map((item)=>{
-              // Number(item.original_price).toFixed(1)
-            })*/
+            setTimeout(function () {
+              $('.set-meal').eq(0).addClass('borF97').siblings().removeClass('borF97')
+              $('.set-meal').eq(0).find(".mealAct").removeClass('isnone').parents().siblings().find(".mealAct").addClass('isnone')
+            })
           }
-
         })
       },
       isCity(){
@@ -163,50 +143,60 @@
       },
       setmealConfirm(){
         this.setmealShow = false
-
       },
       setCancel(){
         this.isMeal = false
       },
-      setConfirm(e){
-        this.isMeal= false
-        if(this.monthId == "1" || this.monthId == "2"){
+      setMeal(index){
+        if(index == "0" ){
           $('.set-meal').eq(0).addClass('borF97').siblings().removeClass('borF97')
           $('.set-meal').eq(0).find(".mealAct").removeClass('isnone').parents().siblings().find(".mealAct").addClass('isnone')
-        }else if(this.monthId == "3" || this.monthId == "4" || this.monthId == "5"){
+          $('.ps-sm').html("月份套餐：参保1-2个月 服务费为￥69.9/月 ，费用计算以实际选择参保月数（含补缴）为准。")
+        }else if(index == "1" ){
           $('.set-meal').eq(1).addClass('borF97').siblings().removeClass('borF97')
           $('.set-meal').eq(1).find(".mealAct").removeClass('isnone').parents().siblings().find(".mealAct").addClass('isnone')
-        }else if(this.monthId == "6" || this.monthId == "7" || this.monthId == "8" || this.monthId == "9" ||
-          this.monthId == "10" || this.monthId == "11" ){
+          $('.ps-sm').html("季度套餐：参保3-5个月  服务费为￥59.9/月 ，费用计算以实际选择参保月份（含补缴）为准。")
+        }else if(index == "2" ){
           $('.set-meal').eq(2).addClass('borF97').siblings().removeClass('borF97')
           $('.set-meal').eq(2).find(".mealAct").removeClass('isnone').parents().siblings().find(".mealAct").addClass('isnone')
-        }else if(this.monthId == "12" ){
+          $('.ps-sm').html("半年套餐：参保6-11个月  服务费为￥49.9/月 ，费用计算以实际选择参保月数（含补缴）为准。 ")
+        }else if(index == "3" ){
           $('.set-meal').eq(3).addClass('borF97').siblings().removeClass('borF97')
           $('.set-meal').eq(3).find(".mealAct").removeClass('isnone').parents().siblings().find(".mealAct").addClass('isnone')
+          $('.ps-sm').html("年度套餐：参保12个月  服务费为￥29.9/月 ，费用计算以实际选择参保月数（含补缴）为准。")
         }
-        window.localStorage.setItem('monthId',JSON.stringify(this.monthId))
-      },
-      setMeal(index){
-        this.isMeal= true;
-        this.setIndex = index
+
       },
     },
     mounted() {
       this.getServiceCharge()
+    },
+    created() {
+
     }
   }
 </script>
 
 <style scoped>
+  .ps-con{
+    font-size:.6rem;
+    font-family:PingFang SC;
+    color:rgba(242,84,84,1);
+    padding:.5rem 0 .95rem .8rem
+  }
+  .ps-sm{
+    font-size:.6rem;
+    font-family:PingFang SC;
+    font-weight:400;
+    color:rgba(102,102,102,1);
+  }
   .setmeal{
     width: calc(100% - 1.6rem);
-    height: 9.4rem;
     background: #fff;
     margin-top: .75rem;
     box-shadow:0px 0px 7px 0px rgba(0, 0, 0, 0.13);
     border-radius:.3rem;
   }
-
   .participants{
     display: flex;
     justify-content: space-between;
@@ -285,7 +275,7 @@
     vertical-align: middle;
   }
   .insuredCity{
-    height: calc(9.4rem - 2.65rem );
+    height: calc(8.5rem - 2.65rem );
     padding:0 .8rem;
     display: flex;
     justify-content: space-between;
