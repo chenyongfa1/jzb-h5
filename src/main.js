@@ -32,7 +32,8 @@ import { Collapse, CollapseItem } from 'vant';
 
 import WechatTitle from 'vue-wechat-title'
 
-
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 
 
 // import 'element-ui/lib/theme-chalk/index.css'
@@ -42,7 +43,7 @@ import 'swiper/dist/css/swiper.css'
 Vue.config.productionTip = false
 Vue.prototype.$ajax = Axios
 Vue.prototype.HOST = 'http://www.jzbshebao.cn'
-// Vue.prototype.HOST = 'http://localhost'
+Vue.prototype.Img = 'http://www.jzbshebao.cn'
 Vue.prototype.$md5 = md5
 Vue.prototype.$toast = Toast
 Vue.prototype.common = common.common
@@ -71,11 +72,29 @@ Vue.use(DatetimePicker);
 Vue.use(Collapse).use(CollapseItem);
 
 /* eslint-disable no-new */
+let loginState = JSON.parse(window.localStorage.getItem('userInfo')) || undefined
+console.log(loginState)
+router.beforeEach((to,from,next)=>{
+  if (to.meta.requireAuth ){
+    if(loginState != undefined){
+      console.log(1)
+      next()
+    }else{
+      next({
+        path:'/login',
+      })
+    }
+  }else {
+    next()
+  }
 
+
+})
 
 new Vue({
   el: '#app',
   router,
+  Axios,
   components: { App },
   template: '<App/>'
 })

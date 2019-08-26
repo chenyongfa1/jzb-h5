@@ -1,6 +1,7 @@
 <template>
   <div class="content">
     <div>
+      <i class="el-icon-delete"></i>
       <Isfootemty />
     </div>
   </div>

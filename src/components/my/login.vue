@@ -24,7 +24,7 @@
           <router-link to="/">忘记密码？</router-link>
           <router-link to="/">验证码登录</router-link>
         </div>
-        <div class="isAccount"> 还没账号？<span>立即注册</span> </div>
+        <div class="isAccount"> 还没账号？<router-link to="/register">立即注册</router-link> </div>
         <div class="logBtn" @click="getLogin">登陆</div>
       </div>
     </div>
@@ -84,7 +84,26 @@
         }
 
       }
+    },
+    mounted(){
+      
+    },
+    created(){
+      console.log(1);
+      
+      $.ajax({
+                url: 'http://www.jzbshebao.cn/home/article/returnArticleDetail ',
+                type: "POST",
+                data: {
+                   id:1
+                },
+                dataType: "JSON",
+                success: function (r) {
+                    console.log(r)
+                }
+            })
     }
+    
   }
 </script>
 
@@ -170,7 +189,7 @@
     text-align: center;
     padding-top: 2.175rem;
   }
-  .isAccount span{
+  .isAccount a{
     color: #F97A2E;
   }
   .logBtn{

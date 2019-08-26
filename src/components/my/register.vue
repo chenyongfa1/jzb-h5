@@ -86,6 +86,10 @@
                 this.$toast({
                   message: "登录成功",
                 })
+                this.$router.push({
+                  name: "login",
+                  params: {}
+                });
               }else {
                 this.$toast({
                   message: r.message,

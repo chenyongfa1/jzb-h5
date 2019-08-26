@@ -3,7 +3,7 @@
       <van-swipe :autoplay="3000" style="height:8rem ;">
         <van-swipe-item class="swipt-index"  v-for="(item, index) in banner" :key="index">
           <router-link :to="{name:'interdetail'}">
-            <img :src="item.banner_url" />
+            <img :src="Img + item.banner_url" />
           </router-link>
         </van-swipe-item>
       </van-swipe>

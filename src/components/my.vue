@@ -55,7 +55,7 @@
     },
     created() {
       let userInfo = JSON.parse(window.localStorage.getItem('userInfo'))
-      this.name = userInfo.name ||""
+      this.name = userInfo.name || ""
     }
   }
 </script>

@@ -78,7 +78,6 @@
                 this.cityIdArr1[item.id] = item.item.map(item =>item.id)
               }
             })
-          console.log(citys)
             this.columns1= [
               {
                 values: Object.keys(citys),

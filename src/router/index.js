@@ -11,6 +11,7 @@ import Coverage from '@/components/coverage/index'
 import Addinsurers from '@/components/coverage/addinsurers'
 import Myparticipants from '@/components/myparticipants/index'
 import Login from '@/components/my/login'
+import CodeLogin from '@/components/my/codelogin'
 import Register from '@/components/my/register'
 import Payback from '@/components/explain/payback'
 import Socialsecuritydetailed from '@/components/explain/socialsecuritydetailed'
@@ -26,9 +27,10 @@ export default new Router({
       component: Index,
       meta: {
         footShow: true,
-        title:"文章详情页",
+        title:"",
         isTitle:false,
         isFootEmty:true,
+        requireAuth:true
       }
     },
     {
@@ -41,6 +43,7 @@ export default new Router({
         isTitle:true,
         isFootEmty:true,
         // keepAlive: true // 需要被缓存
+        requireAuth:true
       }
     },
     {
@@ -52,6 +55,7 @@ export default new Router({
         title:"计算器",
         isTitle:true,
         isFootEmty:true,
+        requireAuth:true
       }
     },
     {
@@ -63,6 +67,7 @@ export default new Router({
         title:"我的",
         isTitle:false,
         isFootEmty:true,
+        requireAuth:true
       }
     },
     {
@@ -73,6 +78,7 @@ export default new Router({
         footShow: false,
         title:"文章详情页",
         isTitle:true,
+        requireAuth:true
       }
     },
     {
@@ -84,6 +90,7 @@ export default new Router({
         title:"我的参保人",
         isTitle:true,
         isRight:false,
+        requireAuth:true
       }
     },
     {
@@ -109,6 +116,17 @@ export default new Router({
       }
     },
     {
+      path: '/codelogin',
+      name: 'codelogin',
+      component: CodeLogin,
+      meta: {
+        footShow: false,
+        title:"验证码登录",
+        isTitle:false,
+        isRight:false,
+      }
+    },
+    {
       path: '/coverage',
       name: 'coverage',
       component: Coverage,
@@ -117,6 +135,7 @@ export default new Router({
         title:"参保套餐",
         isTitle:true,
         isRight:true,
+        requireAuth:true
       }
     },
     {
@@ -130,6 +149,7 @@ export default new Router({
         isRight:true,
         isColor:false,
         // keepAlive: true // 需要被缓存
+        requireAuth:true
       }
     },
     {
@@ -141,7 +161,8 @@ export default new Router({
         title:"新增参保人",
         isTitle:true,
         isRight:true,
-        isColor:false
+        isColor:false,
+        requireAuth:true
       }
     },
     {
@@ -154,7 +175,8 @@ export default new Router({
         isTitle:true,
         isColor:true,
         isFootEmty:true,
-        keepAlive: true // 需要被缓存
+        keepAlive: true, // 需要被缓存
+        requireAuth:true
       }
     },
     {
@@ -167,6 +189,7 @@ export default new Router({
         isTitle:true,
         isColor:false,
         isFootEmty:true,
+        requireAuth:true
       }
     },
     {
@@ -180,6 +203,7 @@ export default new Router({
         isColor:false,
         isFootEmty:true,
         isRight:false,
+        requireAuth:true
       }
     },
     ,
@@ -194,6 +218,7 @@ export default new Router({
         isColor:false,
         isFootEmty:true,
         isRight:false,
+        requireAuth:true
       }
     },
     {
