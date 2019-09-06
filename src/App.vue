@@ -6,7 +6,6 @@
      </keep-alive>
       <router-view v-if="!$route.meta.keepAlive"/>
       <NavFoot />
-
     </div>
 
   </div>
@@ -27,6 +26,7 @@
       }
     },
     mounted() {
+      window.localStorage.setItem('path',JSON.stringify(this.$route.path))
     }
   }
 
@@ -61,7 +61,7 @@
     padding:0 .8rem
   }
   p{
-    margin: 0;
+    margin: 0 !important;
   }
 
 

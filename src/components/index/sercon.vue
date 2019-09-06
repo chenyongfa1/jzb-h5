@@ -29,27 +29,49 @@
          <img src="static/images/index/gjj1.png" alt="">
        </div>
      </div>
-    <div class="consultationImg">
-      <img class="cz_img" src="static/images/index/consultation.png" alt="">
+    <div class="consultationImg pd16">
+      <div class="swiper-container swiper-container2">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide" v-for="(item,index) in banner" :key="index">
+            <router-link :to="{name:'interdetail'}"><img :src="Img + item.banner_url"/></router-link>
+          </div>
+        </div>
+        <div class="swiper-pagination"></div><!--分页器。如果放置在swiper-container外面，需要自定义样式。-->
+      </div>
     </div>
+
   </div>
 </template>
 
 <script>
+  import Swiper from 'swiper';
+  import 'swiper/dist/css/swiper.min.css';
 export default {
   name: 'serCon',
   data () {
     return {
-
+      banner:''
     }
   },
   methods: {
-    axios2: function () {
+    // 轮播图
+    getBannerList: function () {
+      let that = this
+      this.$ajax.post(this.HOST + '/app/index/getBannerList')
+        .then((res) => {
+          this.banner = res.data.data.body
+          setTimeout(function () {
+            let mySwiper1 = new Swiper('.swiper-container2', {
+              autoplay: false,
+              loop:true,
+            })
+          })
+        })
 
-    }
+    },
   },
   mounted () {
-    this.axios2()
+    this.getBannerList()
   }
 }
 </script>
@@ -92,5 +114,14 @@ export default {
     width: 100%;
     height: 4.175rem;
     padding-top:.85rem
+  }
+  .consultationImg a{
+    display: block;
+    width: 100%;
+  }
+  .swiper-slide a img {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 </style>

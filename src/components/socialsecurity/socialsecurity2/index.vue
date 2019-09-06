@@ -4,7 +4,7 @@
       <div class="content">
         <IsHeadEmty />
         <div class="socHeadImg">
-          <img class="cz_img" src="../../../../static/images/socialsecurity/process2.png" alt="">
+          <img class="cz_img" src="../../../../static/images/socialsecurity/process3.png" alt="">
         </div>
         <Socialinfo />
       </div>

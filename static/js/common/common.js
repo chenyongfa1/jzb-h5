@@ -1,6 +1,4 @@
 import md5 from 'js-md5'
-const host = 'http://www.jzbshebao.cn'
-
 
 var common= {
   getsign(biography)
@@ -21,7 +19,6 @@ var common= {
 }
 export default
 {
-  host, // 域名
   common
 
 }

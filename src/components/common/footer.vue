@@ -8,9 +8,9 @@
     @click="tab(index,item.name)"
   >
     <span :class="currIndex == index ? active:''">{{item.title}}</span>
-    <template slot="icon" slot-scope="props">
+    <div slot="icon" slot-scope="props">
       <img :src="props.active ? item.active : item.normal">
-    </template>
+    </div>
   </van-tabbar-item>
 </van-tabbar>
 </template>
@@ -19,7 +19,7 @@
     name: "tabbar",
     data() {
       return {
-        currIndex: 0,
+        currIndex: 1,
         active: 0,
         tabbars: [
           {
@@ -60,7 +60,6 @@
       this.active = this.tabbars.findIndex(
         item => item.name === this.$route.name
       );
-
     },
     created() {
 

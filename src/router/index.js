@@ -17,6 +17,7 @@ import Payback from '@/components/explain/payback'
 import Socialsecuritydetailed from '@/components/explain/socialsecuritydetailed'
 import Funddetailed from '@/components/explain/funddetailed'
 import Test from '@/components/test/index'
+import Auto from '@/components/test/auto'
 Vue.use(Router)
 
 export default new Router({
@@ -27,7 +28,7 @@ export default new Router({
       component: Index,
       meta: {
         footShow: true,
-        title:"",
+        title:"首页",
         isTitle:false,
         isFootEmty:true,
         requireAuth:true
@@ -206,7 +207,6 @@ export default new Router({
         requireAuth:true
       }
     },
-    ,
     {
       path: '/funddetailed',
       name: 'funddetailed',
@@ -232,6 +232,11 @@ export default new Router({
         isColor:true,
         isFootEmty:true,
       }
+    },
+    {
+      path: '/auto',
+      name: 'auto',
+      component: Auto,
     },
   ]
 })

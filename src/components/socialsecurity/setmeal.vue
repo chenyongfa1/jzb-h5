@@ -292,7 +292,6 @@
   }
   .set-meal{
     width: 3.4rem;
-    height: 4.75rem;
     border:1px solid rgba(230,230,230,1);
     border-radius:.25rem;
     position: relative;

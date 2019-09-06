@@ -86,13 +86,13 @@
 
   }
   .notic{
-    height: 23.25rem;
+    /*height: 23.25rem;*/
   }
   .noticcon{
     background: #fff;
     position: relative;
     padding: .75rem 0;
-    height: 23rem;
+    /*height: 23rem;*/
     box-sizing: border-box;
   }
   .noticicon{
