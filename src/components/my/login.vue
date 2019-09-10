@@ -78,11 +78,9 @@
 
                 let userInfo = JSON.stringify(r.data)
                 window.localStorage.setItem('userInfo', userInfo)
-                setTimeout(function () {
                   that.$router.push({
-                    path:'/'
+                      path:'/'
                   })
-                },1000)
               }
             }
           })

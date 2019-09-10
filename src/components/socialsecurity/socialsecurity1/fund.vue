@@ -6,8 +6,8 @@
         <span>公积金</span>
       </div>
       <div class="fundtitle right-fundtitle">
-        <img @click="isFund()" v-if="isfund" :src="icon.active" alt="">
-        <img @click="isFund()" v-else :src="icon.inactive" alt="">
+        <img @click="isFund" v-if="isfund" :src="icon.active" alt="">
+        <img @click="isFund" v-else :src="icon.inactive" alt="">
         缴纳
       </div>
     </div>
@@ -131,10 +131,10 @@
           </div>
           <van-divider/>
           <div class="costSubtotal">
-            <div class="costSubtotalTop">
+            <div class="costSubtotalTop" @click="toSocialDetail1">
               <div class="cosMoney">费用小计</div>
               <div class="cosMoneyInfo">
-                <span>¥{{payBackPrice}}</span>
+                <span>¥{{payBackPrice == undefined ? 0 : payBackPrice}}</span>
                 <span>明细</span>
                 <img src="static/images/socialsecurity/youjiantou.png" alt="">
               </div>
@@ -252,6 +252,7 @@
 </template>
 
 <script>
+    import {mapState} from "vuex"
     export default {
         name: "fund",
         data() {
@@ -293,6 +294,9 @@
                 ifBaseSizeMax:'',
             }
         },
+        computed:mapState({
+            isPayBackPrice1:(state)=>state.isPayBackPrice1,
+        }),
         methods: {
             payRadioClick1() {
                 window.localStorage.setItem('fundNew1',JSON.stringify(this.payRadio))
@@ -319,7 +323,7 @@
                 let type = ""
                 this.ginsenBase = false
                 this.toShow = true
-                if (type = 1) {
+                if (payType == 2) {
                     this.toShow = true
                 } else {
                     this.toShow1 = true
@@ -340,7 +344,7 @@
                         time: data.time,
                         city_id: cityId,
                         level: level,
-                        social: social,
+                        social: this.ifBaseSize,
                         start: start,
                         end: end,
                         type: 2,
@@ -349,18 +353,24 @@
                     dataType: "JSON",
                     success: function (r) {
                         console.log(payType)
-                        if (payType == undefined) {
-                            that.payInfo1 = r.data.total
-                        }
-                        that.payBackPrice = r.data.pay_back_price
                         if (payType == 2) {
                             //此处存值给社保和公积补缴金明细页面
                             window.localStorage.setItem('bugjjMonth', JSON.stringify(Object.keys(r.data).slice(0,
-                                -4)))
+                                -5)))
+                            that.payBackPrice = r.data.pay_back_price
+                            that.$store.commit('payBackPrice2',Number(that.payBackPrice))
                         } else {
                             //此处存值给社保和公积金明细页面
                             window.localStorage.setItem('gjjMonth', JSON.stringify(Object.keys(r.data).slice(0,
-                                -3)))
+                                -4)))
+                            that.payInfo1 = r.data.total
+                            that.$store.commit('payInfo2',Number(that.payInfo1))
+                            let socialdetailArr = []
+                            for (let i in r.data) {
+                                socialdetailArr.push(r.data[i]);
+                            }
+                            window.localStorage.setItem('funddetailArr',JSON.stringify(socialdetailArr.slice(0,-4)))
+                            window.localStorage.setItem('funddetail',JSON.stringify(r.data))
                         }
                         window.localStorage.setItem('gjjBase',JSON.stringify(that.ifBaseSize))
                     }
@@ -368,13 +378,20 @@
             },
             // 跳转明细页面
             toSocialDetail() {
-                if (this.toShow) {
-                    this.$router.push({
-                        name: "funddetailed",
-                        params: {}
-                    });
-                }
-
+                this.$router.push({
+                    name: "funddetailed",
+                    query: {
+                        id: 1
+                    }
+                });
+            },
+            toSocialDetail1() {
+                this.$router.push({
+                    name: "funddetailed",
+                    query: {
+                        id: 2
+                    }
+                });
             },
             // 最低基数
             minBaseConfirm() {
@@ -390,7 +407,7 @@
                         } else if (payOfTime1.getFullYear == payOfTime.getFullYear) {
                             // 是否选择当前月
                             if (payOfTime.getFullYear == nowTime.year && payOfTime.getMonth == nowTime.month) {
-                                if (this.cityInfo.start_time > nowTime.day) {
+                                if (this.cityInfo.end_time > nowTime.day) {
                                     this.getDetail(this.insuredId, this.ifBaseSize, this.payOffVal, this.endVal)
                                 } else {
                                     this.$toast({
@@ -481,6 +498,12 @@
                             this.$toast('补缴不支持隔月补，须与正常申报月份一同参保')
                         } else {
                             this.isPay3 = !this.isPay3
+                            if(this.isPayBackPrice1){
+                                this.$store.commit('isPayBackPrice2',0)
+                            }else {
+                                this.$store.commit('isPayBackPrice2',this.isPay3)
+                            }
+
                         }
                     } else {
                         this.$toast('补缴不支持隔月补，须与正常申报月份一同参保')
@@ -532,6 +555,7 @@
             shebaoConfirm() {
                 this.ginsenMonth = false
                 this.isPay3 = false
+                this.$store.commit('isPayBackPrice2',this.isPay3)
                 $('.isbujiao2').css({
                     display: 'none'
                 })
@@ -576,6 +600,7 @@
             },
             isFund(){
                 this.isfund = !this.isfund
+                this.$store.commit('isPayInfo2',this.isfund)
                 window.localStorage.setItem('fund', JSON.stringify(this.isfund))
                 if (this.isfund) {
                     $('.fundgroup').css({

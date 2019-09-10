@@ -57,17 +57,18 @@ export default {
     // 轮播图
     getBannerList: function () {
       let that = this
-      this.$ajax.post(this.HOST + '/app/index/getBannerList')
-        .then((res) => {
-          this.banner = res.data.data.body
-          setTimeout(function () {
-            let mySwiper1 = new Swiper('.swiper-container2', {
-              autoplay: false,
-              loop:true,
-            })
-          })
+        $.ajax({
+            url: this.HOST+'/app/index/getBannerList',
+            type : "POST",
+            data : {
+                position:2,
+                terminal:4,
+            },
+            dataType : "JSON",
+            success : function(r) {
+                that.banner = r.data
+            }
         })
-
     },
   },
   mounted () {

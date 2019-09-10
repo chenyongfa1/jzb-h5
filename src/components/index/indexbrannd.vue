@@ -1,13 +1,12 @@
 <template>
   <div class="brannd pd16">
-    <div class="swiper-container swiper-container1">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="(item,index) in banner" :key="index">
+    <van-swipe :autoplay="3000" indicator-color="white">
+      <van-swipe-item v-for="(item,index) in banner" :key="index">
+        <div class="swiper-slide" >
           <router-link :to="{name:'interdetail'}"><img :src="Img + item.banner_url"/></router-link>
         </div>
-      </div>
-      <div class="swiper-pagination"></div><!--分页器。如果放置在swiper-container外面，需要自定义样式。-->
-    </div>
+      </van-swipe-item>
+    </van-swipe>
   </div>
 </template>
 
@@ -27,23 +26,18 @@
       // 轮播图
       getBannerList: function () {
         let that = this
-        this.$ajax.post(this.HOST + '/app/index/getBannerList')
-          .then((res) => {
-            this.banner = res.data.data.head
-            setTimeout(function () {
-              let mySwiper1 = new Swiper('.swiper-container1', {
-                pagination: {
-                  el: '.swiper-pagination',
-                },
-                type: 'custom',
-                autoplay: true,
-                loop:true
-                /*observer:true,//修改swiper自己或子元素时，自动初始化swiper
-                observeParents:true,//修改swiper的父元素时，自动初始化swiper*/
-              })
-            })
+          $.ajax({
+              url: this.HOST+'/app/index/getBannerList',
+              type : "POST",
+              data : {
+                  position:1,
+                  terminal:4,
+              },
+              dataType : "JSON",
+              success : function(r) {
+                  that.banner = r.data
+              }
           })
-
       },
       test() {
 

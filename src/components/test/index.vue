@@ -1,13 +1,14 @@
 <template>
     <div>
-      <components-a></components-a>
-      <components-b></components-b>
+      <div>
+      </div>
     </div>
 </template>
 
 <script>
   import componentsA from './a'
   import componentsB from './b'
+  import {mapState} from "vuex"
     export default {
         components:{
           componentsA,
@@ -15,10 +16,10 @@
         },
         name: "index",
         data(){
-            return{
-
+            return {
+                // num:this.$store.state.nodeVoteCount
             }
-        }
+        },
     }
 </script>
 

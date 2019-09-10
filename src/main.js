@@ -6,6 +6,7 @@ import VueAxios from 'vue-axios'
 import App from './App'
 import router from './router'
 import Router from 'vue-router'
+import store from './vuex/store'//导入store.js
 // import MintUI from 'mint-ui'
 import md5 from 'js-md5'
 import $ from 'jquery'
@@ -146,6 +147,7 @@ new Vue({
   el: '#app',
   router,
   Axios,
+  store,
   components: { App },
   template: '<App/>'
 })

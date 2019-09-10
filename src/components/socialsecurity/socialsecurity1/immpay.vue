@@ -2,7 +2,10 @@
   <div class="immPay">
     <div class="joinPayBot">
       <div class="joinPayCon">
-        <span>¥ 3518.25</span>
+        <span >¥ {{(isPayInfo1?Number(payInfo1):0)　+ (isPayInfo2?Number(payInfo2):0) +
+          ((isPayBackPrice1?Number(payBackPrice1):0) + (isPayBackPrice2?Number(payBackPrice2):0))
+
+          }}</span>
         <span>（不含服务费）</span>
       </div>
       <div @click="insuredBtn" class="immediatelypay">立即参保</div>
@@ -11,13 +14,29 @@
 </template>
 
 <script>
+    import {mapState} from "vuex"
     export default {
         name: "immpay",
+        computed:mapState({
+            payInfo1:state=>state.payInfo1,
+            payInfo2:(state)=>state.payInfo2,
+            payBackPrice1:(state)=>state.payBackPrice1,
+            payBackPrice2:(state)=>state.payBackPrice2,
+            isPayInfo2:(state)=>state.isPayInfo2,
+            isPayInfo1:(state)=>state.isPayInfo1,
+            isPayBackPrice1:(state)=>state.isPayBackPrice1,
+            isPayBackPrice2:(state)=>state.isPayBackPrice2,
+        }),
+        data(){
+          return{
+             fund : JSON.parse(window.localStorage.getItem('fund')),
+              moneyCount:""
+            }
+        },
         methods: {
             insuredBtn() {
                 let social = JSON.parse(window.localStorage.getItem('social'))
                 let fund = JSON.parse(window.localStorage.getItem('fund'))
-                console.log(fund)
                 let isPay1 = JSON.parse(window.localStorage.getItem('isPay1'))
                 let isPay2 = JSON.parse(window.localStorage.getItem('isPay2'))
                 // 用户id

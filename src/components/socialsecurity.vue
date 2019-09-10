@@ -55,6 +55,7 @@
             name:"socialsecurity1",
             params:{}
           });
+          this.$router.go()
         }
       },
 
