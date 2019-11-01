@@ -21,8 +21,8 @@
 
         </div>
         <div class="isLogin">
-          <router-link to="/">忘记密码？</router-link>
-          <router-link to="/">验证码登录</router-link>
+          <router-link to="/forgetpassword">忘记密码？</router-link>
+          <router-link to="/codelogin">验证码登录</router-link>
         </div>
         <div class="isAccount"> 还没账号？
           <router-link to="/register">立即注册</router-link>
@@ -34,69 +34,71 @@
 </template>
 
 <script>
-  export default {
-    name: "login",
-    components: {},
-    data() {
-      return {}
-    },
-    methods: {
-      onClickLeft() {
-        this.$router.go(-1)
-      },
-      getLogin() {
-        let phoNum = $('.textName').val().length;
-        let phoVal = $('.textName').val()
-        let passVal = $('.passWord').val()
-        let that = this
-        let data = this.common.getsign()
-        if (phoNum != 11) {
-          this.$toast({
-            message: "请输入正确手机号码",
-          })
-        } else {
-          $.ajax({
-            url: this.HOST + '/app/user/login',
-            type: "POST",
-            data: {
-              sign: data.sign,
-              time: data.time,
-              'phone_no': phoVal,
-              'password': passVal
+    export default {
+        name: "login",
+        components: {},
+        data() {
+            return {}
+        },
+        methods: {
+            onClickLeft() {
+                this.$router.go(-1)
             },
-            dataType: "JSON",
-            success: function (r) {
-              if (r.status != 200) {
-                that.$toast({
-                  message: r.message,
-                })
-              } else {
-                that.$toast({
-                  message: "登录成功",
-                  duration:3000,
-                })
+            getLogin() {
+                let phoNum = $('.textName').val().length;
+                let phoVal = $('.textName').val()
+                let passVal = $('.passWord').val()
+                let that = this
+                let data = this.common.getsign()
+                if (phoNum != 11) {
+                    this.$toast({
+                        message: "请输入正确手机号码",
+                    })
+                } else {
+                    $.ajax({
+                        url: this.HOST + '/app/user/login',
+                        type: "POST",
+                        data: {
+                            sign: data.sign,
+                            time: data.time,
+                            'phone_no': phoVal,
+                            'password': passVal
+                        },
+                        dataType: "JSON",
+                        success: function (r) {
+                            if (r.status != 200) {
+                                that.$toast({
+                                    message: r.message,
+                                })
+                            } else {
+                                that.$toast({
+                                    message: "登录成功",
+                                })
 
-                let userInfo = JSON.stringify(r.data)
-                window.localStorage.setItem('userInfo', userInfo)
-                  that.$router.push({
-                      path:'/'
-                  })
-              }
-            }
-          })
+                                let userInfo = JSON.stringify(r.data)
+                                window.localStorage.setItem('userInfo', userInfo)
+                                const redirect = that.$route.query.redirect
+                                /*that.$router.push({
+                                    path: '/my'
+                                })*/
+                                window.location.href = '/my'
+                            }
+                        }
+                    })
+                }
+
+            },
+
+        },
+        mounted() {
+
+        },
+        created() {
+            console.log(1);
+
         }
 
-      }
-    },
-    mounted() {
-
-    },
-    created() {
-      console.log(1);
-
     }
-
-  }
 </script>
 
 <style scoped>
@@ -180,6 +182,11 @@
   }
 
   .isLogin a {
+    font-size: .7rem;
+    font-family: PingFangSC-Regular;
+    color: #B2B2B2;
+  }
+  .isLogin div {
     font-size: .7rem;
     font-family: PingFangSC-Regular;
     color: #B2B2B2;

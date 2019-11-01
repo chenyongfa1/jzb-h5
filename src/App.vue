@@ -5,7 +5,7 @@
        <router-view v-if="$route.meta.keepAlive"/>
      </keep-alive>
       <router-view v-if="!$route.meta.keepAlive"/>
-      <NavFoot />
+<!--      <NavFoot />-->
     </div>
 
   </div>
@@ -26,7 +26,6 @@
       }
     },
     mounted() {
-      window.localStorage.setItem('path',JSON.stringify(this.$route.path))
     }
   }
 
@@ -164,5 +163,13 @@
   .van-picker__confirm{
     color:#F97A2E
   }
-
+ .orderdetailitem .van-divider{
+  margin: 0;
+}
+  .solialdetailscoupon .van-divider{
+  margin: 0;
+}
+  .pore .van-cell{
+    padding-left:5px;
+  }
 </style>

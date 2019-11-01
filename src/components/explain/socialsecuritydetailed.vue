@@ -3,7 +3,7 @@
     <HeadNav/>
     <div class="content">
       <IsHeadEmty/>
-      <div class="socialcount"> 社保費用总计：¥ {{Number(buCount) + Number(socialCount)}}</div>
+      <div class="socialcount"> 社保费用总计：¥ {{Number(buCount) + Number(socialCount)}}</div>
       <div class="mouthdetatil">
         <h2 class="pd16">每月明细</h2>
         <div class="deletalist">
@@ -16,13 +16,11 @@
                   <div class="detailenterprise col333">企业缴纳(元)</div>
                   <div class="detailpersonal col333">个人缴纳(元)</div>
                 </div>
-                <van-divider/>
                 <div class="detailInfoItem" v-for="(item , index1) in fiveSocialArr" :key="index1">
                   <div class="detailTitle">{{socialdetailArr[index][index1].service_name}}</div>
-                  <div class="detailenterprise">{{socialdetailArr[index][index1].company_price}}</div>
-                  <div class="detailpersonal">{{socialdetailArr[index][index1].personal_price}}</div>
+                  <div class="detailenterprise">{{socialdetailArr[index][index1].company}}</div>
+                  <div class="detailpersonal">{{socialdetailArr[index][index1].personal}}</div>
                 </div>
-                <van-divider/>
                 <div class="detailInfoItem">
                   <div class="detailTitle">小计</div>
                   <div class="detailenterprise">{{socialdetailArr[index].company_subtotal}}</div>
@@ -30,8 +28,7 @@
                 </div>
                 <van-divider/>
                 <div class="countsoc">
-                  <div class="detailTitle">合计：¥ {{Number(socialdetailArr[index].company_subtotal) +
-                    Number(socialdetailArr[index].personal_subtotal)}}
+                  <div class="detailTitle">合计：¥ {{socialdetailArr[index].total}}
                   </div>
                 </div>
               </div>
@@ -41,25 +38,23 @@
       </div>
       <div class="paybackdetail">
         <h2 class="pd16">补缴费用明细</h2>
+        <div class="detaildate  pd16">{{buSocialMonth[0]}} 至{{buSocialMonth[buSocialMonth.length-1]}}</div>
         <div class="detailInfolist ">
           <div class="detailInfoItem pd16">
             <div class="detailTitle col333">险种</div>
             <div class="detailenterprise col333">企业缴纳(元)</div>
             <div class="detailpersonal col333">个人缴纳(元)</div>
           </div>
-          <van-divider/>
           <div class="detailInfoItem pd16">
             <div class="detailTitle">社保</div>
             <div class="detailenterprise">{{buCompanySubtotals}}</div>
             <div class="detailpersonal">{{buPersonalSubtotal}}</div>
           </div>
-          <van-divider/>
           <div class="detailInfoItem pd16">
             <div class="detailTitle">小计</div>
             <div class="detailenterprise">{{buCompanySubtotals}}</div>
             <div class="detailpersonal">{{buPersonalSubtotal}}</div>
           </div>
-          <van-divider/>
           <div class="detailInfoItem countsoc pd16">
             <div class="detailTitle">合计：¥ {{buCount}}</div>
           </div>
@@ -97,6 +92,7 @@
                 id: this.$route.query.id,
                 busocialdetail: JSON.parse(window.localStorage.getItem('busocialdetail')) || ' ',
                 busocialdetailArr: JSON.parse(window.localStorage.getItem('busocialdetailArr')) || ' ',
+                buSocialMonth: JSON.parse(window.localStorage.getItem('bushebaoMonth')) || ' ',
                 buPersonalSubtotal: 0,
                 buCompanySubtotals: 0,
                 buCount:0,
@@ -108,21 +104,21 @@
         }),
         methods: {
             isInfoShow(e) {
-                console.log(e.target)
             }
         },
         mounted() {
-            this.total = this.socialdetail.total
             this.fiveSocialArr = this.socialdetail.key_array
             this.socialBase = `基数 ${this.socialdetail.social}`
-            console.log(this.busocialdetail.pay_back_price)
             this.socialCount = this.socialdetail.total
-            console.log(this.busocialdetailArr)
-            if (this.$route.query.id == 1) {
-
+            if (this.id == 1) {
+                $('.paybackdetail').css({
+                    display:'none',
+                })
             } else {
-                this.buPersonalSubtotal = this.busocialdetailArr[0].personal_subtotal
-                this.buCompanySubtotals = this.busocialdetailArr[0].company_subtotal
+
+                this.buPersonalSubtotal = (Number(this.busocialdetailArr[0].personal_subtotal) * Number(this.busocialdetailArr.length)).toFixed(2)
+                this.buCompanySubtotals = (Number(this.busocialdetailArr[0].company_subtotal) *
+                    Number(this.busocialdetailArr.length)).toFixed(2)
                 this.buCount = this.busocialdetail.total
             }
         },
@@ -146,7 +142,15 @@
     height: 2.625rem;
     line-height: 2.625rem;
   }
-
+  .detaildate {
+    font-size: .7rem;
+    font-family: PingFangSC-Regular;
+    color: #F97A2E;
+    height: 2.625rem;
+    line-height: 2.625rem;
+    background: #fff;
+    border-bottom: 1px solid #E6E6E6;
+  }
   .countsoc .detailTitle {
     font-size: .7rem;
     font-family: PingFangSC-Medium;

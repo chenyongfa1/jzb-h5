@@ -19,14 +19,14 @@
           <p class="mealS">{{item.name}}</p>
           <p class="set-money">¥{{Number(item.price).toFixed(1)}}/月</p>
           <p class="set-discount"><s>¥{{Number(item.original_price).toFixed(1)}}</s></p>
-          <p class="set-downImg">
+         <!-- <p class="set-downImg">
             <img src="../../../static/images/socialsecurity/upjiantou.png" alt="">
-          </p>
+          </p>-->
           <p class="mealAct"><img src="../../../static/images/socialsecurity/mealact.png" alt=""></p>
         </div>
       </div>
       <div>
-        <p class="ps-sm pd16">月份套餐：参保1-2个月 服务费为￥69.9/月 ，费用计算以实际选择参保月数（含补缴）为准。</p>
+        <p class="ps-sm pd16">年度套餐：参保12个月  服务费为￥29.9/月 ，费用计算以实际选择参保月数（含补缴）为准。</p>
         <p class="ps-con pd16">注：社保与公积金同时缴纳只收取一项服务费</p>
       </div>
     </div>
@@ -127,7 +127,7 @@
           },
           dataType : "JSON",
           success : function(r) {
-            that.setmeal = r.data
+            that.setmeal = r.data.reverse()
             setTimeout(function () {
               $('.set-meal').eq(0).addClass('borF97').siblings().removeClass('borF97')
               $('.set-meal').eq(0).find(".mealAct").removeClass('isnone').parents().siblings().find(".mealAct").addClass('isnone')
@@ -148,21 +148,21 @@
         this.isMeal = false
       },
       setMeal(index){
-        if(index == "0" ){
-          $('.set-meal').eq(0).addClass('borF97').siblings().removeClass('borF97')
-          $('.set-meal').eq(0).find(".mealAct").removeClass('isnone').parents().siblings().find(".mealAct").addClass('isnone')
+        if(index == "3" ){
+          $('.set-meal').eq(3).addClass('borF97').siblings().removeClass('borF97')
+          $('.set-meal').eq(3).find(".mealAct").removeClass('isnone').parents().siblings().find(".mealAct").addClass('isnone')
           $('.ps-sm').html("月份套餐：参保1-2个月 服务费为￥69.9/月 ，费用计算以实际选择参保月数（含补缴）为准。")
-        }else if(index == "1" ){
-          $('.set-meal').eq(1).addClass('borF97').siblings().removeClass('borF97')
-          $('.set-meal').eq(1).find(".mealAct").removeClass('isnone').parents().siblings().find(".mealAct").addClass('isnone')
-          $('.ps-sm').html("季度套餐：参保3-5个月  服务费为￥59.9/月 ，费用计算以实际选择参保月份（含补缴）为准。")
         }else if(index == "2" ){
           $('.set-meal').eq(2).addClass('borF97').siblings().removeClass('borF97')
           $('.set-meal').eq(2).find(".mealAct").removeClass('isnone').parents().siblings().find(".mealAct").addClass('isnone')
+          $('.ps-sm').html("季度套餐：参保3-5个月  服务费为￥59.9/月 ，费用计算以实际选择参保月份（含补缴）为准。")
+        }else if(index == "1" ){
+          $('.set-meal').eq(1).addClass('borF97').siblings().removeClass('borF97')
+          $('.set-meal').eq(1).find(".mealAct").removeClass('isnone').parents().siblings().find(".mealAct").addClass('isnone')
           $('.ps-sm').html("半年套餐：参保6-11个月  服务费为￥49.9/月 ，费用计算以实际选择参保月数（含补缴）为准。 ")
-        }else if(index == "3" ){
-          $('.set-meal').eq(3).addClass('borF97').siblings().removeClass('borF97')
-          $('.set-meal').eq(3).find(".mealAct").removeClass('isnone').parents().siblings().find(".mealAct").addClass('isnone')
+        }else if(index == "0" ){
+          $('.set-meal').eq(0).addClass('borF97').siblings().removeClass('borF97')
+          $('.set-meal').eq(0).find(".mealAct").removeClass('isnone').parents().siblings().find(".mealAct").addClass('isnone')
           $('.ps-sm').html("年度套餐：参保12个月  服务费为￥29.9/月 ，费用计算以实际选择参保月数（含补缴）为准。")
         }
 
@@ -315,6 +315,7 @@
     font-family:PingFangSC-Light;
     font-weight:300;
     color: #B2B2B2;
+    padding-bottom: .5rem;
   }
   .set-downImg img{
     width: .55rem;

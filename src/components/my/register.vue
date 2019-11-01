@@ -16,99 +16,186 @@
         <div class="login-tel">
           <input type="text" id="code">
           <img src="../../../static/images/my/vercode.png" alt="">
-          <span class="vercode" @click="getCode">获取验证码</span>
+          <span class="vercode bgcol1" v-if="seconds ==Number('00') " @click="getCode">获取验证码</span>
+          <span class="vercode bgcol2" v-else>{{minutes}}:{{seconds}}</span>
         </div>
         <div class="login-tel">
           <input type="password" id="password">
           <img src="../../../static/images/my/password.png" alt="">
         </div>
       </div>
-      <div class="logBtn" @click="register">注册</div>
+      <div class="logBtn" @click="register">注册并登录</div>
     </div>
   </div>
 </template>
 <script>
-  export default {
-    name: "register",
-    methods: {
-      onClickLeft() {
-        this.$router.go(-1)
-      },
-      getCode(){
-        if($('#phone').val().length<11){
-          this.$toast({
-            message: "请输入正确手机号码",
-          })
-        }else {
-          let phone = $('#phone').val()
-          $.ajax({
-            url:this.HOST+'/app/user/getVerify',
-            type:'POST',
-            data: {
-              phone_no:phone
-            },
-            dataType:"JSON",
-            success:function (r) {
-
+    export default {
+        name: "register",
+        data() {
+            return {
+                minutes: Number('01'),
+                seconds: Number('00'),
+                time:''
             }
-          })
-        }
-
-      },
-      register(){
-        let phone = $('#phone').val()
-        let code = $('#code').val()
-        let password = $('#password').val()
-        if(phone.length < 11){
-          this.$toast({
-            message: "请输入正常手机号码",
-          })
-        }else if(code.length == 0){
-          this.$toast({
-            message: "请填写验证码",
-          })
-        }else if(password.length == 0){
-          this.$toast({
-            message: "请填写密码",
-          })
-        }else {
-          $.ajax({
-            url:this.HOST+'/app/user/register',
-            type:'POST',
-            data: {
-              phone_no:phone,
-              verify:code,
-              password:password,
+        },
+        watch: {
+            second: {
+                handler(newVal) {
+                    this.num(newVal)
+                }
             },
-            dataType:"JSON",
-            success:function (r) {
-              if(r.status == 200){
-                this.$toast({
-                  message: "登录成功",
-                })
-                this.$router.push({
-                  name: "login",
-                  params: {}
-                });
-              }else {
-                this.$toast({
-                  message: r.message,
-                })
-              }
+            minute: {
+                handler(newVal) {
+                    this.num(newVal)
+                }
             }
-          })
+        },
+        computed: {
+            second: function () {
+                return this.num(this.seconds)
+            },
+            minute: function () {
+                return this.num(this.minutes)
+            }
+
+        },
+        methods: {
+            onClickLeft() {
+                this.$router.go(-1)
+            },
+            getCode() {
+                if ($('#phone').val().length < 11) {
+                    this.$toast({
+                        message: "请输入正确手机号码",
+                    })
+                } else {
+                    let phone = $('#phone').val()
+                    let that = this
+                    window.clearInterval(this.time)
+                    this.minutes = Number('01');
+                    this.seconds = Number('00');
+                    this.add()
+                    $.ajax({
+                        url: this.HOST + '/app/user/getVerify',
+                        type: 'POST',
+                        data: {
+                            phone_no: phone,
+                            type:1,
+                        },
+                        dataType: "JSON",
+                        success: function (r) {
+                            if(r.status == 200){
+                                that.$toast({
+                                    message: "获取验证码成功",
+                                })
+                            }else {
+                                that.$toast({
+                                    message: r.message,
+                                })
+                            }
+                        }
+                    })
+                }
+
+            },
+            register() {
+                let phone = $('#phone').val()
+                let code = $('#code').val()
+                let password = $('#password').val()
+                let that = this
+                let invitation = JSON.parse(window.localStorage.getItem('invitation'))
+                if (phone.length < 11) {
+                    this.$toast({
+                        message: "请输入正常手机号码",
+                    })
+                } else if (code.length == 0) {
+                    this.$toast({
+                        message: "请填写验证码",
+                    })
+                } else if (password.length == 0) {
+                    this.$toast({
+                        message: "请填写密码",
+                    })
+                } else {
+                    $.ajax({
+                        url: this.HOST + '/app/user/register',
+                        type: 'POST',
+                        data: {
+                            phone_no: phone,
+                            verify: code,
+                            password: password,
+                            invitation_code:invitation
+
+                        },
+                        dataType: "JSON",
+                        success: function (r) {
+                            if (r.status == 200) {
+                                that.$toast({
+                                    message: "注册并登录成功",
+                                })
+                                window.localStorage.setItem('userInfo',JSON.stringify(r.data ))
+                                that.$router.push({
+                                    name: "my",
+                                    params: {}
+                                });
+
+                            } else if(r.status == 14){
+                                that.$toast({
+                                    message: r.message,
+                                })
+                                that.$router.push({
+                                    name: "login",
+                                    params: {}
+                                });
+                            }else {
+                                that.$toast({
+                                    message: r.message,
+                                })
+                            }
+                        }
+                    })
+                }
+            },
+            num: function (n) {
+                return n < 10 ? '0' + n : '' + n
+            },
+            add: function () {
+                let _this = this
+                this.time = window.setInterval(function () {
+                    if (_this.seconds === 0 && _this.minutes !== 0) {
+                        _this.seconds = 59
+                        _this.minutes -= 1
+                    } else if (_this.minutes === 0 && _this.seconds === 0) {
+                        _this.seconds = 0
+                        window.clearInterval(this.time)
+                    } else {
+                        _this.seconds -= 1
+                    }
+                }, 1000)
+            }
         }
-      }
     }
-  }
 </script>
 
 <style scoped>
   .back {
     width: .5rem;
     height: .85rem;
-  }
 
+  }
+  .bgcol1{
+    /*color: #fff !important;*/
+    /*background: #F97A2E;*/
+    color:#F97A2E !important;
+    text-align: center;
+    width: 4.5rem;
+  }
+  .bgcol2{
+    /*color:#F97A2E !important;*/
+    width: 4.5rem;
+    /*background:#B2B2B2 ;*/
+    text-align: center;
+  }
   .login-head {
     width: 7rem;
     height: 7rem;
@@ -180,9 +267,9 @@
     position: absolute;
     right: 0;
     top: 0;
-    height: 2.25rem;
-    line-height: 2.25rem;
-    padding-right: .5rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    padding:0 .5rem;
   }
 
   .login-fill .login-tel:nth-child(3) img {

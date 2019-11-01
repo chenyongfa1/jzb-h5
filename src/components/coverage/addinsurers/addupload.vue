@@ -5,7 +5,8 @@
       <div class="updownID pd16">
         <div class="upload">
           <div class="updownId1">
-            <van-uploader :after-read="afterReadid1" v-model="fileList1" :max-count="1"/>
+            <van-uploader :after-read="afterReadid1" v-model="fileList1"
+                          :before-delete="afterDelete1" :max-count="1"/>
             <img class="uploadbg " src="static/images/coverage/uploadbg.png" alt="">
             <img class="uploadidbg" src="static/images/coverage/Frontid.png" alt="">
             <div class="shot">拍摄正面</div>
@@ -23,15 +24,16 @@
     <div class="addupinfo">
       <van-cell-group>
         <div class="pore">
+          <div class="xing">*</div>
           <van-field
             v-model="username"
             label="姓名"
             type="text"
             placeholder="请填写真实姓名"
           />
-          <div class="xing">*</div>
         </div>
         <div class="pore">
+          <div class="xing">*</div>
           <van-field
             label="性别"
           />
@@ -55,9 +57,10 @@
               >
             </van-radio>
           </van-radio-group>
-          <div class="xing">*</div>
+
         </div>
         <div class="pore">
+          <div class="xing">*</div>
           <van-field
             v-model="phone"
             label="手机号码"
@@ -65,9 +68,10 @@
             maxlength="11"
             placeholder="请填写手机号码"
           />
-          <div class="xing2">*</div>
+
         </div>
         <div class="pore">
+          <div class="xing">*</div>
           <van-field
             v-model="id_no"
             label="身份证号码"
@@ -75,15 +79,15 @@
             maxlength="18"
             placeholder="请填写身份证号码"
           />
-          <div class="xing3">*</div>
         </div>
         <div class="pore">
+          <div class="xing">*</div>
           <van-field
             label="户口性质"
           />
           <van-radio-group v-model="agriculture">
             <van-radio name="1">
-              农业户口
+              农村户口
               <img
                 slot="icon"
                 slot-scope="props"
@@ -92,7 +96,7 @@
               >
             </van-radio>
             <van-radio name="2">
-              非农业户口
+              城镇户口
               <img
                 slot="icon"
                 slot-scope="props"
@@ -101,18 +105,18 @@
               >
             </van-radio>
           </van-radio-group>
-          <div class="xing2">*</div>
         </div>
         <div class="pore">
+          <div class="xing">*</div>
           <van-field
             v-model="id_info"
             label="户口信息"
             type="text"
             placeholder="请填写户口详细地址"
           />
-          <div class="xing2">*</div>
         </div>
-        <div class="pore">
+        <div class="pore" @click="isNationShow">
+          <div class="xing">*</div>
           <van-field
             v-model="nation"
             label="民族"
@@ -123,9 +127,9 @@
             @click-right-icon="isNationShow"
             label-class="nationShow"
           />
-          <div class="xing">*</div>
         </div>
         <div class="pore">
+          <div class="xing">*</div>
           <van-field
             label="婚姻状况"
           />
@@ -149,9 +153,10 @@
               >
             </van-radio>
           </van-radio-group>
-          <div class="xing2">*</div>
+
         </div>
-        <div class="pore">
+        <div class="pore" @click="isWork">
+          <div class="xing">*</div>
           <van-field
             v-model="workType"
             label="工作类型"
@@ -162,18 +167,19 @@
             @click-right-icon="isWork"
             label-class="workShow"
           />
-          <div class="xing2">*</div>
+
         </div>
         <div class="pore">
+          <div class="xing">*</div>
           <van-field
             v-model="emergency_contact"
             label="紧急联系人"
             type="text"
             placeholder="请填写紧急联系人姓名"
           />
-          <div class="xing3">*</div>
         </div>
         <div class="pore">
+          <div class="xing">*</div>
           <van-field
             v-model="emergency_phone"
             label="手机号码"
@@ -181,9 +187,8 @@
             maxlength="11"
             placeholder="请填写紧急联系人号码"
           />
-          <div class="xing2">*</div>
         </div>
-        <div class="pore">
+        <div class="pore noneed">
           <van-field
             v-model="social_no"
             label="社保电脑号"
@@ -192,7 +197,7 @@
             placeholder="请填写"
           />
         </div>
-        <div class="pore">
+        <div class="pore noneed">
           <van-field
             v-model="accumulation_no"
             label="公积金账号"
@@ -201,7 +206,7 @@
             placeholder="请填写"
           />
         </div>
-        <div class="pore">
+        <div class="pore noneed" @click="isEducat">
           <van-field
             v-model="educat"
             label="学历"
@@ -214,7 +219,7 @@
           />
 
         </div>
-        <div class="pore">
+        <div class="pore noneed" @click="toast">
           <van-field
             v-model="resume"
             label="上传简历"
@@ -224,7 +229,7 @@
             right-icon="arrow"
           />
         </div>
-        <div class="pore">
+        <div class="pore noneed" @click="toast">
           <van-field
             v-model="other"
             label="其他资料上传"
@@ -254,7 +259,7 @@
       <div class="addeducation">
         <div class="educationradio">
           <van-radio-group v-model="typeRadio1">
-            <van-radio :name="index" v-for="(item, index) in education">
+            <van-radio :name="index" v-for="(item, index) in education" :key="index">
               {{item.name}}
               <img
                 slot="icon"
@@ -281,7 +286,7 @@
       <div class="addeducation">
         <div class="educationradio">
           <van-radio-group v-model="typeRadio2">
-            <van-radio :name="index" v-for="(item, index) in education">
+            <van-radio :name="index" v-for="(item, index) in education" :key="index">
               {{item.name}}
               <img
                 slot="icon"
@@ -302,320 +307,398 @@
 </template>
 
 <script>
-  import Vue from 'vue';
-  import {Uploader} from 'vant';
-  import header from "../../common/header";
+    import Vue from 'vue';
+    import {Uploader} from 'vant';
+    import header from "../../common/header";
+    import { ImagePreview } from 'vant';
 
-  Vue.use(Uploader);
-  export default {
-    name: "addupload",
-    data() {
-      return {
-        fileList1: [],
-        fileList2: [],
-        columns: [],
-        title: '我是标题',
-        isShow: false,
-        isShow1: false,
-        username: '',
-        phone: '',
-        id_no: '',
-        id_info: '',
-        nationId: '',
-        workType: '',
-        resume: '',
-        other: '',
-        workArr: [],
-        eduArr: [],
-        isWorkType: false,
-        emergency_contact: "",
-        emergency_phone: '',
-        accumulation_no: '',
-        social_no: "",
-        nation: '',
-        educat: '',
-        sex: '1',
-        typeRadio2: 1,
-        marriage: '1',
-        agriculture: '1',
-        iseducat: '1',
-        typeRadio1: 1,
-        icon: {
-          active: 'static/images/coverage/select.png',
-          inactive: 'static/images/coverage/unselect.png'
+    Vue.use(ImagePreview);
+    Vue.use(Uploader);
+    export default {
+        name: "addupload",
+        data() {
+            return {
+                fileList1: [],
+                fileList2: [],
+                columns: [],
+                title: '我是标题',
+                isShow: false,
+                isShow1: false,
+                username: '',
+                phone: '',
+                id_no: '',
+                id_info: '',
+                nationId: '',
+                workType: '',
+                resume: '',
+                other: '',
+                workArr: [],
+                eduArr: [],
+                isWorkType: false,
+                emergency_contact: "",
+                emergency_phone: '',
+                accumulation_no: '',
+                social_no: "",
+                nation: '',
+                educat: '',
+                sex: '1',
+                typeRadio2: 0,
+                marriage: '1',
+                agriculture: '1',
+                iseducat: '1',
+                typeRadio1: 0,
+                icon: {
+                    active: 'static/images/coverage/select.png',
+                    inactive: 'static/images/coverage/unselect.png'
+                },
+                education: "",
+                addJson: {
+                    id_front: '',
+                    id_back: '',
+                    username: '',
+                    sex: '',
+                    phone: '',
+                    id_no: '',
+                    id_info: '',
+                    agriculture: '',
+                    nationId: '',
+                    marriage: '',
+                    workId: '',
+                    emergency_contact: '',
+                    emergency_phone: '',
+                    social_no: '',
+                    accumulation_no: '',
+                    educatId: '',
+                },
+            }
         },
-        education: "",
-        addJson: {
-          id_front: '',
-          id_back: '',
-          username: '',
-          sex: '',
-          phone: '',
-          id_no: '',
-          id_info: '',
-          agriculture: '',
-          nationId: '',
-          marriage: '',
-          workId: '',
-          emergency_contact: '',
-          emergency_phone: '',
-          social_no: '',
-          accumulation_no: '',
-          educatId: '',
-        }
-      }
-    },
-    methods: {
-      afterReadid1(file) {
-        let fd = new FormData()
-        fd.append('file', file.file)
-        $('.updownId1 .uploadbg').css("display", "none")
-        $('.updownId1 .uploadidbg').css("display", "none")
-        $('.updownId1 .shot').css("display", "none")
-        let that = this
-        this.$ajax.post('http://www.jzbshebao.cn/app/common/upload_file', fd, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }).then((r) => {
-          if (r.data.status == 200) {
-            that.addJson.id_front = r.data.data.img_url
-            that.$toast({
-              message: "上传成功",
-            })
-          } else {
-            that.$toast({
-              message: "请重新上传",
-            })
-          }
-        })
-      },
-      afterReadid2(file) {
-        let fd = new FormData()
-        fd.append('file', file.file)
-        $('.updownId2 .uploadbg').css("display", "none")
-        $('.updownId2 .uploadidbg').css("display", "none")
-        $('.updownId2 .shot').css("display", "none")
-        let that = this
-        this.$ajax.post('http://www.jzbshebao.cn/app/common/upload_file', fd, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }).then((r) => {
-          if (r.data.status == 200) {
-            that.addJson.id_back = r.data.data.img_url
-            that.$toast({
-              message: "上传成功",
-            })
-          } else {
-            that.$toast({
-              message: "请重新上传",
-            })
-          }
-        })
-      },
-      cancel() {
-        this.isShow = false
-        this.isShow1 = false
-        this.isWorkType = false
-      },
-      eduConfirm() {
-        this.isShow1 = false
-        this.addJson.educatId = this.typeRadio2 + 1;
-        let value = this.eduArr[this.typeRadio2]
-        $('.eduShow').next().find('.van-field__control').attr('placeholder', value)
-      },
-      workConfirm() {
-        this.isWorkType = false
-        this.addJson.workId = this.typeRadio1 + 1
-        let value = this.workArr[this.typeRadio1]
-        $('.workShow').next().find('.van-field__control').attr('placeholder', value)
-      },
-      // 选择民族确定按钮
-      emergencyConfirm(value, index) {
-        this.isShow = false
-        $('.nationShow').next().find('.van-field__control').attr('placeholder', value)
-        let natId = Number(index) + 1
-        this.addJson.nationId = natId
-      },
-      // 获取民族
-      isNationShow() {
-        this.title = "民族"
-        this.isShow = true
-        let that = this
-        let data = this.common.getsign()
-        $.ajax({
-          url: this.HOST + '/app/common/getNation',
-          type: "POST",
-          data: {
-            time: data.time,
-            sign: data.sign
-          },
-          dataType: "JSON",
-          success: function (r) {
-            if (r.status == 200) {
-              let navVal = []
-              let navId = []
-              let val = r.data.map((item, index) => {
-                navVal.push(item.name)
-                navId.push(item.id)
-              })
-              that.columns = [
-                {
-                  id: navId,
-                  values: navVal,
-                }
-              ]
-            } else {
-
-            }
-          }
-        })
-      },
-      // 获取工作
-      isWork() {
-        // this.isWork = true
-        this.isWorkType = true
-        this.title = "工作"
-        let that = this
-        let data = this.common.getsign()
-        $.ajax({
-          url: this.HOST + '/app/common/getWork',
-          type: "POST",
-          data: {
-            time: data.time,
-            sign: data.sign
-          },
-          dataType: "JSON",
-          success: function (r) {
-            if (r.status == 200) {
-              console.log()
-              that.education = r.data
-              r.data.map(item => that.workArr.push(item.name))
-            } else {
-
-            }
-          }
-        })
-      },
-      // 获取学历
-      isEducat() {
-        this.isShow1 = true
-        this.title = "工作"
-        let that = this
-        let data = this.common.getsign()
-        $.ajax({
-          url: this.HOST + '/app/common/getStudy',
-          type: "POST",
-          data: {
-            time: data.time,
-            sign: data.sign
-          },
-          dataType: "JSON",
-          success: function (r) {
-            if (r.status == 200) {
-              that.education = r.data
-              r.data.map(item => that.eduArr.push(item.name))
-            } else {
-              that.$toast({
-                message: r.message,
-              })
-            }
-          }
-        })
-      },
-      saveBtn() {
-        let addJsonArr = []
-        let addParticipants = "";
-        this.addJson.username = this.username;
-        this.addJson.sex = this.sex
-        this.addJson.phone = this.phone
-        this.addJson.id_no = this.id_no
-        this.addJson.agriculture = this.agriculture
-        this.addJson.id_info = this.id_info
-        this.addJson.marriage = this.marriage
-        this.addJson.emergency_contact = this.emergency_contact
-        this.addJson.emergency_phone = this.emergency_phone
-        this.addJson.social_no = this.social_no
-        this.addJson.accumulation_no = this.accumulation_no
-        addParticipants = this.addJson
-        if (!this.addJson.id_front) {
-          this.$toast({
-            message: "请上传身份证正面图片",
-          })
-        } else if (!this.addJson.id_back) {
-          this.$toast({
-            message: "请上传身份证反面图片",
-          })
-        } else if (!this.addJson.username) {
-          this.$toast({
-            message: "填写名字",
-          })
-        } else if (!this.addJson.phone) {
-          this.$toast({
-            message: "填写手机号码",
-          })
-        } else if (!this.addJson.id_no) {
-          this.$toast({
-            message: "填写手身份证号码",
-          })
-        } else if (!this.addJson.id_info) {
-          this.$toast({
-            message: "填写户口信息",
-          })
-        } else if (!this.addJson.nationId) {
-          this.$toast({
-            message: "请选择民族",
-          })
-        } else if (!this.addJson.workId) {
-          this.$toast({
-            message: "请选择工作",
-          })
-        } else if (!this.addJson.emergency_contact) {
-          this.$toast({
-            message: "请填写紧急联系人",
-          })
-        } else if (!this.addJson.emergency_phone) {
-          this.$toast({
-            message: "请填写紧急联系人手机号码",
-          })
-        } else {
-          let data = this.common.getsign()
-          window.localStorage.setItem("addJson", JSON.stringify(this.addJson))
-          let addJson = JSON.parse(window.localStorage.getItem("addJson"))
-          $.ajax({
-            url: this.HOST + '/app/user/addAccount',
-            type: "POST",
-            data: {
-              user_id: '4',
-              id_front: addJson.id_front,
-              id_back: addJson.id_back,
-              name: addJson.username,
-              sex: addJson.sex,
-              phone_no: addJson.phone,
-              id_no: addJson.id_no,
-              id_type: addJson.agriculture,
-              id_info: addJson.id_info,
-              nation: addJson.nationId,
-              marry: addJson.marriage,
-              work_type: addJson.workId,
-              emergency_contact: addJson.emergency_contact,
-              emergency_phone: addJson.emergency_phone,
-              social_no: addJson.social_no,
-              accumulation_no: addJson.accumulation_no,
-              education: addJson.educatId,
+        methods: {
+            afterReadid1(file) {
+                let fd = new FormData()
+                fd.append('file', file.file)
+              console.log( file.file)
+                $('.updownId1 .uploadbg').css("display", "none")
+                $('.updownId1 .uploadidbg').css("display", "none")
+                $('.updownId1 .shot').css("display", "none")
+                let that = this
+                this.$ajax.post(this.HOST + '/app/common/upload_file', fd, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then((r) => {
+                    if (r.data.status == 200) {
+                        that.addJson.id_front = r.data.data.img_url
+                        that.$toast({
+                            message: "上传成功",
+                        })
+                        setTimeout(function () {
+                            $('.updownId1 .van-icon-delete').eq(0).css({
+                                fontSize:'1.4rem'
+                            })
+                            $('.updownId1 .van-uploader__preview-image img').eq(0).click(function () {
+                                ImagePreview({
+                                    images: [
+                                        this.Img+that.addJson.id_front,
+                                        // 'http://www.jzbshebao.cn/Uploads/Public/Uploads/2019-09-20/5d84a21745644.png'
+                                    ],
+                                    startPosition: 1,
+                                    onClose() {
+                                    }
+                                });
+                            })
+                            $('.updownId1 .van-icon-delete').eq(0).click(function () {
+                                $('.updownId1 .uploadbg').css("display", "block")
+                                $('.updownId1 .uploadidbg').css("display", "block")
+                                $('.updownId1 .shot').css("display", "block")
+                            })
+                        })
+                    } else {
+                        /*that.$toast({
+                            message: "请重新上传",
+                        })*/
+                    }
+                })
             },
-            dataType: "JSON",
-            success: function (r) {
-            }
-          })
-        }
-      }
-    },
-    mounted() {
+            afterReadid2(file) {
+                let fd = new FormData()
+                fd.append('file', file.file)
+              console.log(file.file)
+                $('.updownId2 .uploadbg').css("display", "none")
+                $('.updownId2 .uploadidbg').css("display", "none")
+                $('.updownId2 .shot').css("display", "none")
+                let that = this
+                this.$ajax.post(this.HOST+'/app/common/upload_file', fd, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then((r) => {
+                    if (r.data.status == 200) {
+                        that.addJson.id_back = r.data.data.img_url
+                        that.$toast({
+                            message: "上传成功",
+                        })
+                        setTimeout(function () {
+                            $('.updownId2 .van-icon-delete').eq(0).css({
+                                fontSize:'1.4rem'
+                            })
+                            $('.updownId2 .van-uploader__preview-image img').eq(0).click(function () {
+                                ImagePreview({
+                                    images: [
+                                        this.Img+that.addJson.id_back,
+                                    ],
+                                    startPosition: 1,
+                                    onClose() {
+                                    }
+                                });
 
+                            })
+                            $('.updownId2 .van-icon-delete').eq(0).click(function () {
+                                $('.updownId2 .uploadbg').css("display", "block")
+                                $('.updownId2 .uploadidbg').css("display", "block")
+                                $('.updownId2 .shot').css("display", "block")
+                            })
+                        })
+                    } else {
+                        /*that.$toast({
+                            message: "请重新上传",
+                        })*/
+                    }
+                })
+            },
+            afterDelete1(file){
+                console.log(file)
+                $('.updownId1 .uploadbg').css("display", "block")
+                $('.updownId1 .uploadidbg').css("display", "block")
+                $('.updownId1 .shot').css("display", "block")
+                return true;
+            },
+            aa(){
+
+            },
+            cancel() {
+                this.isShow = false
+                this.isShow1 = false
+                this.isWorkType = false
+            },
+            eduConfirm() {
+                this.isShow1 = false
+                this.addJson.educatId = this.typeRadio2 + 1;
+                let value = this.eduArr[this.typeRadio2]
+                $('.eduShow').next().find('.van-field__control').attr('placeholder', value)
+            },
+            workConfirm() {
+                this.isWorkType = false
+                this.addJson.workId = this.typeRadio1 + 1
+                let value = this.workArr[this.typeRadio1]
+                $('.workShow').next().find('.van-field__control').attr('placeholder', value)
+            },
+            // 选择民族确定按钮
+            emergencyConfirm(value, index) {
+                this.isShow = false
+                $('.nationShow').next().find('.van-field__control').attr('placeholder', value)
+                let natId = Number(index) + 1
+                this.addJson.nationId = natId
+            },
+            // 获取民族
+            isNationShow() {
+                this.title = "民族"
+                this.isShow = true
+                let that = this
+                let data = this.common.getsign()
+                $.ajax({
+                    url: this.HOST + '/app/common/getNation',
+                    type: "POST",
+                    data: {
+                        time: data.time,
+                        sign: data.sign
+                    },
+                    dataType: "JSON",
+                    success: function (r) {
+                        if (r.status == 200) {
+                            let navVal = []
+                            let navId = []
+                            let val = r.data.map((item, index) => {
+                                navVal.push(item.name)
+                                navId.push(item.id)
+                            })
+                            that.columns = [
+                                {
+                                    id: navId,
+                                    values: navVal,
+                                }
+                            ]
+                        } else {
+
+                        }
+                    }
+                })
+            },
+            // 获取工作
+            isWork() {
+                // this.isWork = true
+                this.isWorkType = true
+                this.title = "工作"
+                let that = this
+                let data = this.common.getsign()
+                $.ajax({
+                    url: this.HOST + '/app/common/getWork',
+                    type: "POST",
+                    data: {
+                        time: data.time,
+                        sign: data.sign
+                    },
+                    dataType: "JSON",
+                    success: function (r) {
+                        if (r.status == 200) {
+                            console.log()
+                            that.education = r.data
+                            r.data.map(item => that.workArr.push(item.name))
+                        } else {
+
+                        }
+                    }
+                })
+            },
+            // 获取学历
+            isEducat() {
+                this.isShow1 = true
+                this.title = "工作"
+                let that = this
+                let data = this.common.getsign()
+                $.ajax({
+                    url: this.HOST + '/app/common/getStudy',
+                    type: "POST",
+                    data: {
+                        time: data.time,
+                        sign: data.sign
+                    },
+                    dataType: "JSON",
+                    success: function (r) {
+                        if (r.status == 200) {
+                            that.education = r.data
+                            r.data.map(item => that.eduArr.push(item.name))
+                        } else {
+                            that.$toast({
+                                message: r.message,
+                            })
+                        }
+                    }
+                })
+            },
+            saveBtn() {
+                let addJsonArr = []
+                let that = this
+                let addParticipants = "";
+                this.addJson.username = this.username;
+                this.addJson.sex = this.sex
+                this.addJson.phone = this.phone
+                this.addJson.id_no = this.id_no
+                this.addJson.agriculture = this.agriculture
+                this.addJson.id_info = this.id_info
+                this.addJson.marriage = this.marriage
+                this.addJson.emergency_contact = this.emergency_contact
+                this.addJson.emergency_phone = this.emergency_phone
+                this.addJson.social_no = this.social_no
+                this.addJson.accumulation_no = this.accumulation_no
+                addParticipants = this.addJson
+                if (!this.addJson.id_front) {
+                    this.$toast({
+                        message: "请上传身份证正面图片",
+                    })
+                } else if (!this.addJson.id_back) {
+                    this.$toast({
+                        message: "请上传身份证反面图片",
+                    })
+                } else if (!this.addJson.username) {
+                    this.$toast({
+                        message: "填写名字",
+                    })
+                } else if (!this.addJson.phone) {
+                    this.$toast({
+                        message: "填写手机号码",
+                    })
+                } else if (!this.addJson.id_no) {
+                    this.$toast({
+                        message: "填写手身份证号码",
+                    })
+                } else if (!this.addJson.id_info) {
+                    this.$toast({
+                        message: "填写户口信息",
+                    })
+                } else if (!this.addJson.nationId) {
+                    this.$toast({
+                        message: "请选择民族",
+                    })
+                } else if (!this.addJson.workId) {
+                    this.$toast({
+                        message: "请选择工作",
+                    })
+                } else if (!this.addJson.emergency_contact) {
+                    this.$toast({
+                        message: "请填写紧急联系人",
+                    })
+                } else if (!this.addJson.emergency_phone) {
+                    this.$toast({
+                        message: "请填写紧急联系人手机号码",
+                    })
+                } else {
+                    let data = this.common.getsign()
+                    window.localStorage.setItem("addJson", JSON.stringify(this.addJson))
+                    let addJson = JSON.parse(window.localStorage.getItem("addJson"))
+                    let UserId = JSON.parse(window.localStorage.getItem("userInfo")).id
+                    $.ajax({
+                        url: this.HOST + '/app/user/addAccount',
+                        type: "POST",
+                        data: {
+                            user_id: UserId,
+                            id_front: addJson.id_front,
+                            id_back: addJson.id_back,
+                            name: addJson.username,
+                            sex: addJson.sex,
+                            phone_no: addJson.phone,
+                            id_no: addJson.id_no,
+                            id_type: addJson.agriculture,
+                            id_info: addJson.id_info,
+                            nation: addJson.nationId,
+                            marry: addJson.marriage,
+                            work_type: addJson.workId,
+                            emergency_contact: addJson.emergency_contact,
+                            emergency_phone: addJson.emergency_phone,
+                            social_no: addJson.social_no,
+                            accumulation_no: addJson.accumulation_no,
+                            education: addJson.educatId,
+                        },
+                        dataType: "JSON",
+                        success: function (r) {
+                            console.log(r.status)
+                            if (r.status == 200) {
+                                that.$toast({
+                                    message:'保存成功'
+                                })
+                                that.$router.push({
+                                    name: 'myparticipants'
+                                })
+
+                            } else {
+                                that.$toast({
+                                    message:r.message
+                                })
+                            }
+                        }
+                    })
+                }
+            },
+            toast(){
+                this.$toast({
+                    message:'即将上线，敬请期待',
+                    duration:Number(1500)
+                })
+            },
+        },
+        mounted() {
+            this.aa()
+        }
     }
-  }
 </script>
 
 <style scoped>
@@ -691,12 +774,13 @@
 
   .pore {
     position: relative;
+    display: flex;
+    border-bottom: 1px solid #E6E6E6;
   }
 
   .xing {
-    position: absolute;
-    left: 2.5rem;
-    top: .6rem;
+    line-height: 2.2rem;
+    padding-left: .7rem;
     z-index: 0;
     color: #F97A2E;
   }
@@ -804,5 +888,7 @@
     background: #f97a2e;
     color: #fff;
   }
-
+  .noneed{
+    padding-left: 1rem;
+  }
 </style>

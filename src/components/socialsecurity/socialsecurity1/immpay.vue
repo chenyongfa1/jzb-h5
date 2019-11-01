@@ -2,11 +2,10 @@
   <div class="immPay">
     <div class="joinPayBot">
       <div class="joinPayCon">
-        <span >¥ {{(isPayInfo1?Number(payInfo1):0)　+ (isPayInfo2?Number(payInfo2):0) +
-          ((isPayBackPrice1?Number(payBackPrice1):0) + (isPayBackPrice2?Number(payBackPrice2):0))
-
+        <span >¥ {{((isPayInfo1?Number(payInfo1):0)　+ (isPayInfo2?Number(payInfo2):0)
+          +(isPayBackPrice1?Number(payBackPrice1):0) +(isPayBackPrice2?Number(payBackPrice2):0)).toFixed(2)
           }}</span>
-        <span>（不含服务费）</span>
+        <span>（不含服务费</span>
       </div>
       <div @click="insuredBtn" class="immediatelypay">立即参保</div>
     </div>
@@ -73,8 +72,8 @@
                 //公积金基数
                 let gjjBase = JSON.parse(window.localStorage.getItem('gjjBase')) || undefined
                 //存储续交或开户按钮
-                let fundNew1 = window.localStorage.getItem('fundNew1')
-                let soclialNew1 = window.localStorage.getItem('soclialNew1')
+                let fundNew1 = JSON.parse(window.localStorage.getItem('fundNew1'))
+                let soclialNew1 = JSON.parse(window.localStorage.getItem('soclialNew1'))
                 let con = $('.van-field__control').eq(0).val()//等级
                 let con1 = $('.van-field__control').eq(1).val()//正常起始月份
                 let con2 = $('.van-field__control').eq(2).val()//结束起始月份
@@ -86,7 +85,7 @@
                 let con8 = $('.van-field__control').eq(8).val()//结束起始月份
                 let con9 = $('.van-field__control').eq(9).val()//基数
                 let con10 = $('.van-field__control').eq(10).val()//补缴月份
-                console.log('con'+con)
+                /*console.log('con'+con)
                 console.log('con1'+con1)
                 console.log('con2'+con2)
                 console.log('con3'+con3)
@@ -96,7 +95,7 @@
                 console.log('con7'+con7)
                 console.log('con8'+con8)
                 console.log('con9'+con9)
-                console.log('con10'+con10)
+                console.log('con10'+con10)*/
                 if (social == false && fund == false) {
                     this.$toast({
                         message: '社保或公积金必选一项'
@@ -220,11 +219,20 @@
                         accumulation_charge: accumulationCharge,//公积金基数
                         terminal: 'h5',
                         social_new: socialNew,
-                        accumulation_new: accumulationNew
+                        accumulation_new: accumulationNew,
                     },
                     dataType: "JSON",
                     success: function (r) {
-
+                      if(r.status == 200){
+                          window.localStorage.setItem('orderInfo',JSON.stringify(r.data))
+                          that.$router.push({
+                              path:'/socialsecurity2'
+                          })
+                      }else {
+                          that.$toast({
+                              message: r.message
+                          })
+                      }
                     }
                 })
             }
@@ -276,5 +284,4 @@
     font-family: PingFangSC-Regular;
     color: #fff;
   }
-
 </style>

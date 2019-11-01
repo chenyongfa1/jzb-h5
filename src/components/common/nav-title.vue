@@ -3,7 +3,7 @@
   <header class="bar bar-nav">
     <h1 class="title">桔子保</h1>
     <div class="title-icon">
-      <span><img class="cz_img" src="../../../static/images/index/kefu.png" alt="客服"></span>
+      <span><img @click="kefuImg" class="cz_img" src="../../../static/images/index/kefu.png" alt="客服"></span>
       <span><img class="cz_img" src="../../../static/images/index/news.png" alt="消息"></span>
     </div>
   </header>
@@ -22,6 +22,9 @@ export default {
       this.$router.go(-1)
       console.log(1)
     },
+      kefuImg() {
+          window.location.href = 'http://p.qiao.baidu.com/cps/chat?siteId=13796223&userId=27414030&cp=&cr=&cw=%E5%AE%98%E7%BD%91PC'
+      },
   }
 }
 </script>

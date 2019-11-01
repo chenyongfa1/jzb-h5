@@ -12,6 +12,7 @@ const store = new Vuex.Store({
     payBackPrice2: 0.00,//公积金补缴明细
     isPayBackPrice2:false,
     socialdetail:{},
+    vip:0,
   },
   mutations: {
     payInfo1(state, msg) {
@@ -40,6 +41,9 @@ const store = new Vuex.Store({
     },
     socialdetail(state, msg){
       state.socialdetail = msg
+    },
+    getVip(state, msg){
+      state.vip = msg
     }
   }
 })

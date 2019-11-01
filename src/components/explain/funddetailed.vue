@@ -3,7 +3,7 @@
     <HeadNav/>
     <div class="content">
       <IsHeadEmty/>
-      <div class="socialcount"> 社保費用总计：¥ 8274.6</div>
+      <div class="socialcount"> 社保费用总计：¥{{Number(fundCount) + Number(buCount)}}</div>
       <div class="mouthdetatil">
         <h2 class="pd16">每月明细</h2>
         <div class="deletalist">
@@ -21,8 +21,8 @@
                 </div>
                 <div class="detailInfoItem">
                   <div class="detailTitle">{{funddetailArr[0][0].service_name}}</div>
-                  <div class="detailenterprise">{{funddetailArr[0][0].company_price}}</div>
-                  <div class="detailpersonal">{{funddetailArr[0][0].personal_price}}</div>
+                  <div class="detailenterprise">{{funddetailArr[0][0].company}}</div>
+                  <div class="detailpersonal">{{funddetailArr[0][0].personal}}</div>
                 </div>
                 <div class="detailInfoItem">
                   <div class="detailTitle">小计</div>
@@ -34,62 +34,62 @@
                 </div>
               </div>
             </van-collapse-item>
-           <!-- <van-collapse-item title-class="colF97" value-class="col333" title="2019-07" value="价钱" name="2">
-              <div class="detailInfolist">
-                <div class="detailInfoItem">
-                  <div class="detailTitle col333">险种</div>
-                  <div class="detailenterprise col333">企业缴纳(元)</div>
-                  <div class="detailpersonal col333">个人缴纳(元)</div>
-                </div>
-                <van-divider/>
-                <div class="detailInfoItem">
-                  <div class="detailTitle">公积金</div>
-                  <div class="detailenterprise">224.40</div>
-                  <div class="detailpersonal">427.69</div>
-                </div>
-                <van-divider/>
-                <div class="detailInfoItem">
-                  <div class="detailTitle">小计</div>
-                  <div class="detailenterprise">224.40</div>
-                  <div class="detailpersonal">427.69</div>
-                </div>
-                <van-divider/>
-                <div class="detailInfoItem countsoc">
-                  <div class="detailTitle">合计：¥ 2061.90</div>
-                </div>
-              </div>
-            </van-collapse-item>
-            <van-collapse-item title-class="colF97" value-class="col333" title="2019-07" value="价钱" name="3">
-              <div class="detailInfolist">
-                <div class="detailInfoItem">
-                  <div class="detailTitle col333">险种</div>
-                  <div class="detailenterprise col333">企业缴纳(元)</div>
-                  <div class="detailpersonal col333">个人缴纳(元)</div>
-                </div>
-                <van-divider/>
-                <div class="detailInfoItem">
-                  <div class="detailTitle">公积金</div>
-                  <div class="detailenterprise">224.40</div>
-                  <div class="detailpersonal">427.69</div>
-                </div>
-                <van-divider/>
-                <div class="detailInfoItem">
-                  <div class="detailTitle">小计</div>
-                  <div class="detailenterprise">224.40</div>
-                  <div class="detailpersonal">427.69</div>
-                </div>
-                <van-divider/>
-                <div class="detailInfoItem countsoc">
-                  <div class="detailTitle">合计：¥ 2061.90</div>
-                </div>
-              </div>
-            </van-collapse-item>-->
+            <!-- <van-collapse-item title-class="colF97" value-class="col333" title="2019-07" value="价钱" name="2">
+               <div class="detailInfolist">
+                 <div class="detailInfoItem">
+                   <div class="detailTitle col333">险种</div>
+                   <div class="detailenterprise col333">企业缴纳(元)</div>
+                   <div class="detailpersonal col333">个人缴纳(元)</div>
+                 </div>
+                 <van-divider/>
+                 <div class="detailInfoItem">
+                   <div class="detailTitle">公积金</div>
+                   <div class="detailenterprise">224.40</div>
+                   <div class="detailpersonal">427.69</div>
+                 </div>
+                 <van-divider/>
+                 <div class="detailInfoItem">
+                   <div class="detailTitle">小计</div>
+                   <div class="detailenterprise">224.40</div>
+                   <div class="detailpersonal">427.69</div>
+                 </div>
+                 <van-divider/>
+                 <div class="detailInfoItem countsoc">
+                   <div class="detailTitle">合计：¥ 2061.90</div>
+                 </div>
+               </div>
+             </van-collapse-item>
+             <van-collapse-item title-class="colF97" value-class="col333" title="2019-07" value="价钱" name="3">
+               <div class="detailInfolist">
+                 <div class="detailInfoItem">
+                   <div class="detailTitle col333">险种</div>
+                   <div class="detailenterprise col333">企业缴纳(元)</div>
+                   <div class="detailpersonal col333">个人缴纳(元)</div>
+                 </div>
+                 <van-divider/>
+                 <div class="detailInfoItem">
+                   <div class="detailTitle">公积金</div>
+                   <div class="detailenterprise">224.40</div>
+                   <div class="detailpersonal">427.69</div>
+                 </div>
+                 <van-divider/>
+                 <div class="detailInfoItem">
+                   <div class="detailTitle">小计</div>
+                   <div class="detailenterprise">224.40</div>
+                   <div class="detailpersonal">427.69</div>
+                 </div>
+                 <van-divider/>
+                 <div class="detailInfoItem countsoc">
+                   <div class="detailTitle">合计：¥ 2061.90</div>
+                 </div>
+               </div>
+             </van-collapse-item>-->
           </van-collapse>
         </div>
       </div>
       <div class="paybackdetail">
         <h2 class="pd16">补缴费用明细</h2>
-        <div class="detaildate  pd16">2019-08 至 2019-09</div>
+        <div class="detaildate  pd16">{{bugjjMonth[0]}} 至 {{bugjjMonth[bugjjMonth.length-1]}}</div>
         <van-divider/>
         <div class="detailInfolist ">
           <div class="detailInfoItem pd16">
@@ -99,16 +99,16 @@
           </div>
           <div class="detailInfoItem pd16">
             <div class="detailTitle">公积金</div>
-            <div class="detailenterprise">224.40</div>
-            <div class="detailpersonal">427.69</div>
+            <div class="detailenterprise">{{buCompanySubtotals}}</div>
+            <div class="detailpersonal">{{buCompanySubtotals}}</div>
           </div>
           <div class="detailInfoItem pd16">
             <div class="detailTitle">小计</div>
-            <div class="detailenterprise">224.40</div>
-            <div class="detailpersonal">427.69</div>
+            <div class="detailenterprise">{{buCompanySubtotals}}</div>
+            <div class="detailpersonal">{{buCompanySubtotals}}</div>
           </div>
           <div class="detailInfoItem countsoc pd16">
-            <div class="detailTitle">合计：¥ 2061.90</div>
+            <div class="detailTitle">合计：¥ {{buCount}}</div>
           </div>
         </div>
       </div>
@@ -134,20 +134,38 @@
                 infoList: true,
                 detailShow: false,
                 money: '',
-                socialList:{},
-                gjjMonth:JSON.parse(window.localStorage.getItem('gjjMonth')),
-                funddetailArr:JSON.parse(window.localStorage.getItem('funddetailArr')),
-                funddetail:JSON.parse(window.localStorage.getItem('funddetail')),
-                fundBase:'',
+                socialList: {},
+                gjjMonth: JSON.parse(window.localStorage.getItem('gjjMonth')),
+                funddetailArr: JSON.parse(window.localStorage.getItem('funddetailArr')),
+                funddetail: JSON.parse(window.localStorage.getItem('funddetail')),
+                bufunddetail: JSON.parse(window.localStorage.getItem('bufunddetail')),
+                bufunddetailArr: JSON.parse(window.localStorage.getItem('bufunddetailArr')),
+                bugjjMonth: JSON.parse(window.localStorage.getItem('bugjjMonth')) || ' ',
+                fundBase: '',
+                buPersonalSubtotal: 0,
+                buCompanySubtotals: 0,
+                id: this.$route.query.id,
+                buCount: 0,
+                fundCount:0,
             }
         },
         methods: {
             isInfoShow(e) {
-                console.log(e.target)
             }
         },
         mounted() {
-          this.fundBase = `基数 ${ this.funddetail.social}`
+            this.fundBase = `基数 ${this.funddetail.social}`
+            this.fundCount = this.funddetail.total
+            if (this.id == 1) {
+                $('.paybackdetail').css({
+                    display:'none',
+                })
+            } else {
+                this.buCompanySubtotals = (Number(this.bufunddetailArr[0].company_subtotal) *
+                    Number(this.bugjjMonth.length)).toFixed(2)
+                this.buPersonalSubtotal = (Number(this.bufunddetailArr[0].personal_subtotal) * Number(this.bugjjMonth.length)).toFixed(2)
+                this.buCount = this.bufunddetail.total
+            }
         },
         created() {
 

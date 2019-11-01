@@ -59,7 +59,10 @@
           name:"socialsecurity1",
           params:{}
         });
-      }
+      },
+
+    },
+    mounted() {
     }
   }
 </script>

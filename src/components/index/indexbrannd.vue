@@ -2,8 +2,8 @@
   <div class="brannd pd16">
     <van-swipe :autoplay="3000" indicator-color="white">
       <van-swipe-item v-for="(item,index) in banner" :key="index">
-        <div class="swiper-slide" >
-          <router-link :to="{name:'interdetail'}"><img :src="Img + item.banner_url"/></router-link>
+        <div @click="wxGzh(item.jump_url)"  class="swiper-slide" >
+          <div><img :src="Img + item.banner_url"/></div>
         </div>
       </van-swipe-item>
     </van-swipe>
@@ -39,13 +39,18 @@
               }
           })
       },
-      test() {
-
-      }
+        toast(){
+            this.$toast({
+                message:'即将上线，敬请期待',
+                duration:Number(1500)
+            })
+        },
+        wxGzh(jumpUrl){
+          window.location.href = jumpUrl
+        }
     },
     mounted() {
       this.getBannerList()
-      this.test()
 
     },
     created() {
@@ -71,6 +76,11 @@
   .swiper-slide a img {
     width: 100%;
     height: 100%;
+    overflow: hidden;
+  }
+  .swiper-slide img {
+    width: 100%;
+    height: 7.5rem;
     overflow: hidden;
   }
 </style>

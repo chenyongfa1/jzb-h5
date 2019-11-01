@@ -1,29 +1,32 @@
 
 <template>
-<van-tabbar v-model="active" class="active_tab" v-show="$route.meta.footShow==undefined||$route.meta.footShow"
->
-  <van-tabbar-item
-    v-for="(item,index) in tabbars"
-    :key="index"
-    @click="tab(index,item.name)"
+<div>
+  <van-tabbar v-model="active" class="active_tab" v-show="$route.meta.footShow==undefined||$route.meta.footShow"
   >
-    <span :class="currIndex == index ? active:''">{{item.title}}</span>
-    <div slot="icon" slot-scope="props">
-      <img :src="props.active ? item.active : item.normal">
-    </div>
-  </van-tabbar-item>
-</van-tabbar>
+    <van-tabbar-item
+      v-for="(item,index) in tabbars"
+      :key="index"
+      @click="tab(index,item.name)"
+    >
+      <span :class="currIndex == index ? active:''">{{item.title}}</span>
+      <div slot="icon" slot-scope="props">
+        <img :src="props.active ? item.active : item.normal">
+      </div>
+    </van-tabbar-item>
+  </van-tabbar>
+</div>
+
 </template>
 <script>
   export default {
     name: "tabbar",
     data() {
       return {
-        currIndex: 1,
+        currIndex: 0,
         active: 0,
         tabbars: [
           {
-            name: "/",
+            name: "index",
             title: "首页",
             normal: require("../../../static/images/common/indexNor.png"),
             active: require("../../../static/images/common/indexAct.png")
@@ -53,12 +56,16 @@
     methods: {
       tab(index, val) {
         this.currIndex = index;
-        this.$router.push(val);
+        this.$router.push(
+            {
+                name:val
+            }
+        );
       },
     },
     mounted() {
       this.active = this.tabbars.findIndex(
-        item => item.name === this.$route.name
+        item =>item.name === this.$route.name
       );
     },
     created() {

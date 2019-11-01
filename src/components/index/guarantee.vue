@@ -1,7 +1,7 @@
 <template>
   <div class="guarantee">
     <div>
-      <h2>服务内容</h2>
+      <h2>服务保障</h2>
       <div class="index-line"></div>
       <div class="guarantee-list pd16">
         <div class="guarantee-item">
@@ -10,19 +10,19 @@
           <p>人社部认证许可正规专业服务平台</p>
         </div>
         <div class="guarantee-item">
-          <p><img src="static/images/index/compliance.png" alt=""></p>
-          <p class="guarantee-title">资质合规</p>
-          <p>人社部认证许可正规专业服务平台</p>
+          <p><img src="static/images/index/compliance1.png" alt=""></p>
+          <p class="guarantee-title">资金安全</p>
+          <p>第三方银行全程监管社保款去向</p>
         </div>
         <div class="guarantee-item">
-          <p><img src="static/images/index/compliance.png" alt=""></p>
-          <p class="guarantee-title">资质合规</p>
-          <p>人社部认证许可正规专业服务平台</p>
+          <p><img src="static/images/index/compliance2.png" alt=""></p>
+          <p class="guarantee-title">专业服务</p>
+          <p>资深社保专家急速响应100%在线服务</p>
         </div>
         <div class="guarantee-item">
-          <p><img src="static/images/index/compliance.png" alt=""></p>
-          <p class="guarantee-title">资质合规</p>
-          <p>人社部认证许可正规专业服务平台</p>
+          <p><img src="static/images/index/compliance3.png" alt=""></p>
+          <p class="guarantee-title">高效便捷</p>
+          <p>全程在线自助操作，轻松三部完成参保 </p>
         </div>
       </div>
       <div class="index-line"></div>

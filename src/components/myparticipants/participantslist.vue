@@ -1,22 +1,23 @@
 <template>
     <div class="participantslist">
-      <router-link :to="{name:'socialsecurity',query:{name:item.name,id:item.id}}" @click="addName(item.name,item.id)"
+      <router-link :to="{name:'socialsecurity',query:{name:item.name,id:item.id}}"
                    class="participantsItem"
                    v-for="(item,index) in
-      partic">
-        <div class="parname">{{item.name }}</div>
+      partic" :key="index">
+        <div class="parname">{{item.name}}</div>
         <div class="paraddress">
-          <p>城镇户口</p>
-          <p>广东·深圳市福田区泰然四路</p>
+          <p v-if="item.id_type == 2">城镇户口</p>
+          <p v-else>农村户口</p>
+          <p>{{item.id_info}}</p>
         </div>
         <div class="parjzb">
           <img class="cz_img" src="static/images/myparticipants/jzbImg.png" alt="">
         </div>
       </router-link>
-      <router-link :to="{name:'addinsurers'}" class="addpar">
-        <img src="static/images/myparticipants/paradd.png" alt="">
+      <div  class="addpar">
+        <img @click="toAdd" src="static/images/myparticipants/paradd.png" alt="">
         <p>添加参保人</p>
-      </router-link>
+      </div>
     </div>
 </template>
 
@@ -29,7 +30,6 @@
           }
         },
         methods:{
-
           getAccountList(){
             let data = this.common.getsign()
             let userInfo = JSON.parse(window.localStorage.getItem("userInfo"))
@@ -48,9 +48,27 @@
               }
             })
           },
+            addName(name,id){
+              console.log(name,id)
+                window.localStorage.setItem('particName',JSON.stringify(name))
+                window.localStorage.setItem('particId',JSON.stringify(id))
+              this.$router.push({
+                  name:'socialsecurity'
+              })
+                // window.location.href = '/socialsecurity'
+            },
+            toAdd(){
+              this.$router.push({
+                  path:'addinsurers'
+              })
+            }
         },
         mounted() {
-          this.getAccountList()
+            let getAcc = window.localStorage.getItem('inputPhone') || undefined
+            if(getAcc === undefined){
+                this.getAccountList()
+            }else {
+            }
         }
     }
 </script>
@@ -69,6 +87,8 @@
   .participantsItem .parname{
     font-size:1.2rem;
     font-family:PingFangSC-Regular;
+    width: 4rem;
+    overflow: hidden;
   }
   .participantsItem .paraddress{
     font-size:.7rem;
