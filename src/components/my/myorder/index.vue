@@ -13,7 +13,7 @@
           <van-tab>
             <div slot="title">
               待支付
-              <van-icon class="info" :info="tobepaidcount"/>
+              <van-icon class="info" :info="zeroCount"/>
             </div>
             <div v-if="tobepaidcount !== undefined" id="socal1">
               <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
@@ -408,7 +408,8 @@
         pagedata: {},
         payCount: 0,
         browser: '',
-        zfbPay: this.HOST + '/app/index/aliWapPay'
+        zfbPay: this.HOST + '/app/index/aliWapPay',
+        zeroCount:0.
 
       }
     },
@@ -472,6 +473,7 @@
           success: function (r) {
             that.tobepaid = r.data.list || []
             that.tobepaidcount = r.data.count || undefined
+            that.zeroCount = r.data.zeroCount == 0? undefined :r.data.zeroCount
             that.tobepaid.map((item, index) => {
               let time = Math.round(((new Date()).getTime()) / 1000);
               let time1 = Math.round(((new Date(item.add_time)).getTime()) / 1000);

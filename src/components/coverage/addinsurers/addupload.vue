@@ -376,7 +376,6 @@
             afterReadid1(file) {
                 let fd = new FormData()
                 fd.append('file', file.file)
-              console.log( file.file)
                 $('.updownId1 .uploadbg').css("display", "none")
                 $('.updownId1 .uploadidbg').css("display", "none")
                 $('.updownId1 .shot').css("display", "none")
@@ -422,7 +421,6 @@
             afterReadid2(file) {
                 let fd = new FormData()
                 fd.append('file', file.file)
-              console.log(file.file)
                 $('.updownId2 .uploadbg').css("display", "none")
                 $('.updownId2 .uploadidbg').css("display", "none")
                 $('.updownId2 .shot').css("display", "none")
@@ -466,7 +464,6 @@
                 })
             },
             afterDelete1(file){
-                console.log(file)
                 $('.updownId1 .uploadbg').css("display", "block")
                 $('.updownId1 .uploadidbg').css("display", "block")
                 $('.updownId1 .shot').css("display", "block")
@@ -550,7 +547,6 @@
                     dataType: "JSON",
                     success: function (r) {
                         if (r.status == 200) {
-                            console.log()
                             that.education = r.data
                             r.data.map(item => that.workArr.push(item.name))
                         } else {
@@ -670,7 +666,6 @@
                         },
                         dataType: "JSON",
                         success: function (r) {
-                            console.log(r.status)
                             if (r.status == 200) {
                                 that.$toast({
                                     message:'保存成功'

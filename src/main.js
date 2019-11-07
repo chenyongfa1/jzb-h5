@@ -54,12 +54,12 @@ import 'mint-ui/lib/style.css'
 Vue.config.productionTip = false
 Vue.prototype.$ajax = Axios
 //正式服
-// Vue.prototype.HOST = 'http://www.jzbshebao.cn'
-// Vue.prototype.Img = 'http://www.jzbshebao.cn'
+Vue.prototype.HOST = 'https://www.jzbshebao.cn'
+Vue.prototype.Img = 'https://www.jzbshebao.cn'
 // Vue.prototype.href= 'http://wx.jzbshebao.cn'
 // 测试服
-Vue.prototype.HOST = 'http://test.jzbshebao.cn'
-Vue.prototype.Img = 'http://test.jzbshebao.cn'
+// Vue.prototype.HOST = 'http://test.jzbshebao.cn'
+// Vue.prototype.Img = 'http://test.jzbshebao.cn'
 // Vue.prototype.href= 'http://wxtest.jzbshebao.cn'
 // 本地
 Vue.prototype.href= 'localhost:8080'
@@ -156,13 +156,11 @@ if (ua.match(/MicroMessenger/i) == 'micromessenger') {
         sex:sex,
       }
       if(nowUrl.split('?')[1] !== undefined && nowUrl.split('?')[1].length >30){
-        console.log(nowUrl.split('?')[1],1)
         if (tmp == 100) {
           window.localStorage.setItem('userInfo', JSON.stringify(userInfo))
           next()
           //没用绑定手机号码
         } else if(tmp == 1 || tmp == 2){
-          console.log(2)
           let inputPhone = {
             tmp:tmp,
             id:id,
@@ -172,21 +170,17 @@ if (ua.match(/MicroMessenger/i) == 'micromessenger') {
           window.localStorage.setItem('userInfo', JSON.stringify(userInfo))
           next()
         }else {
-          console.log(3)
           next()
         }
-
       }else {
-        console.log(4)
         let userInfo = JSON.parse(window.localStorage.getItem('userInfo')) || undefined
         if(userInfo === undefined){
-          console.log(5)
           window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx37f1f33e98ab4327&redirect_uri=http%3A%2F%2Fwww.jzbshebao.cn%2Fapp%2Fwechat%2FgetUserInfo&response_type=code&scope=snsapi_userinfo&state=0pptiizf#wechat_redirect'"
         }else {
           next()
         }
+        next()
       }
-
     } else {
       next()
     }

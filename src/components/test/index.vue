@@ -78,6 +78,7 @@
           if (!window.plus) return;
           scan.close();
         },
+
       }
     }
 </script>

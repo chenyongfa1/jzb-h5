@@ -94,7 +94,6 @@
 
         },
         created() {
-            console.log(1);
 
         }
 

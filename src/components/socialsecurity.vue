@@ -18,59 +18,59 @@
 </template>
 
 <script>
-    import HeadNav from "./common/header";
-    import IsHeadEmty from "./common/isheademty";
-    import Isfootemty from './common/isfootemty'
-    import Participants from "./socialsecurity/participants"
-    import Setmeal from "./socialsecurity/setmeal"
-    import PayOff from "./socialsecurity/payoff"
-    import Noticeorprocess from "./socialsecurity/noticeorprocess"
-    import NavFoot from "./common/footer";
+  import HeadNav from "./common/header";
+  import IsHeadEmty from "./common/isheademty";
+  import Isfootemty from './common/isfootemty'
+  import Participants from "./socialsecurity/participants"
+  import Setmeal from "./socialsecurity/setmeal"
+  import PayOff from "./socialsecurity/payoff"
+  import Noticeorprocess from "./socialsecurity/noticeorprocess"
+  import NavFoot from "./common/footer";
 
-    export default {
-        name: 'socialsecurity',
-        components: {
-            HeadNav,
-            IsHeadEmty,
-            Participants,
-            Setmeal,
-            PayOff,
-            Noticeorprocess,
-            Isfootemty,
-            NavFoot
-        },
+  export default {
+    name: 'socialsecurity',
+    components: {
+      HeadNav,
+      IsHeadEmty,
+      Participants,
+      Setmeal,
+      PayOff,
+      Noticeorprocess,
+      Isfootemty,
+      NavFoot
+    },
 
-        data() {
-            return {}
-        },
-        methods: {
-            nextStepBtn() {
-                if ($('.participantsRight span').html() == "请选择参保人") {
-                    this.$toast({
-                        message: '请选择参保人'
-                    })
-                } else if ($('.addInfo').html() == '请选择参保城市') {
-                    this.$toast({
-                        message: '请选择参保城市'
-                    })
-                } else {
-                    this.$router.push({
-                        name: "socialsecurity1",
-                        params: {}
-                    });
-                  window.location.reload(location.href)
-                }
-            },
-
-        },
-        mounted() {
-
-        },
-        created() {
-            // window.localStorage.setItem("city",JSON.stringify(this.cityIdArr[index[0]]))
-
+    data() {
+      return {}
+    },
+    methods: {
+      nextStepBtn() {
+        if ($('.participantsRight span').html() == "请选择参保人") {
+          this.$toast({
+            message: '请选择参保人'
+          })
+        } else if ($('.addInfo').html() == '请选择参保城市') {
+          this.$toast({
+            message: '请选择参保城市'
+          })
+        } else {
+          this.$router.push({
+            name: "socialsecurity1",
+            params: {}
+          });
+          this.$router.go()
         }
+      },
+
+    },
+    mounted() {
+
+    },
+    created() {
+      // window.localStorage.setItem("city",JSON.stringify(this.cityIdArr[index[0]]))
+
     }
+  }
 </script>
 
 <style scoped>

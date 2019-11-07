@@ -10,7 +10,6 @@
       created() {
           alert(1)
         if (this.$route.query.code) {//如果连接中能拿到code说明此时access_token没有或者已过期，需要重新获取token
-          console.log(this.$route.query.code)
           let obj = {};
           var url =
             `https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx37f1f33e98ab4327&secret=Smiling:

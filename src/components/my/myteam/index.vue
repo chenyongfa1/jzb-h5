@@ -167,7 +167,10 @@
 
       },
       partnersBtn() {
-        this.kefuShow = true
+        // this.kefuShow = true
+        this.$router.push({
+          path:'/orangepartners'
+        })
       },
       getKefu() {
         window.location.href = 'http://p.qiao.baidu.com/cps/chat?siteId=13796223&userId=27414030&cp=&cr=&cw=%E5%AE%98%E7%BD%91PC'

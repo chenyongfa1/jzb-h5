@@ -53,7 +53,7 @@
       </router-link>
       <div class="myline"></div>
       <div @click="toPartnerLevel" class="userImg3" >
-        <img src="static/images/my/member.png" alt="">
+        <img src="static/images/my/member1.png" alt="">
         <span>桔子伙伴</span>
       </div>
       <div class="myline"></div>
@@ -283,8 +283,10 @@
   }
 
   .user3 .userImg3 img {
-    width: 1.225rem;
-    height: .85rem;
+    /*width: 1.225rem;
+    height: .85rem;*/
+    width: 1.05rem;
+    height: 1.25rem  ;
   }
 
   .user3 .userImg4 img {

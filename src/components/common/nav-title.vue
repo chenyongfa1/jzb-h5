@@ -20,7 +20,6 @@ export default {
   methods:{
     onClickLeft() {
       this.$router.go(-1)
-      console.log(1)
     },
       kefuImg() {
           window.location.href = 'http://p.qiao.baidu.com/cps/chat?siteId=13796223&userId=27414030&cp=&cr=&cw=%E5%AE%98%E7%BD%91PC'

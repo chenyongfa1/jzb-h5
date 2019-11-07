@@ -97,14 +97,18 @@
       <van-divider hairline/>-->
       <div class="socialinfoItem" @click="balance">
         <div class="socialinfoleft">余额抵扣</div>
-        <div class="socialinforight fontInco colF25"><span>¥ {{alanceDeduction}}</span>
+        <div class="socialinforight fontInco colF25">
+          <span v-if="alanceDeduction == 0">¥ {{alanceDeduction}}</span>
+          <span v-else>-¥ {{alanceDeduction}}</span>
           <van-icon name="arrow"/>
         </div>
       </div>
       <van-divider hairline/>
       <div class="socialinfoItem" @click="coupons">
         <div class="socialinfoleft">优惠券抵扣</div>
-        <div class="socialinforight fontInco colF25"><span>¥ {{worthsCount}}</span>
+        <div class="socialinforight fontInco colF25">
+          <span v-if="worthsCount == 0">¥ {{worthsCount}}</span>
+          <span v-else>-¥ {{worthsCount}}</span>
           <van-icon name="arrow"/>
         </div>
       </div>
@@ -544,10 +548,8 @@
 
       payMoney() {
         if (this.checked) {
-
           this.payShow = true;
           // window.clearInterval(this.time);
-
         } else {
           this.$toast({
             message: "请勾选桔子保服务协议"
@@ -643,8 +645,7 @@
               that.multiplesIndex = []
               that.worths = []
               that.worths = []
-              that.couponBtn()
-            }else{
+            } else {
               $('.couponcheck').removeClass('couponcheckbg')
             }
           }
@@ -752,15 +753,11 @@
                   },
                   dataType: "JSON",
                   success: function (r) {
-                    that.multiplesId = []
                     if (r.status == 200) {
                       that.couponList = [...that.couponList, ...r.data.list] || []
                       that.page1++
                       that.$toast({
                         message: '加载第' + that.page1 + '页'
-                      })
-                      that.couponList.map((item) => {
-                        that.multiplesId.push(item.multiple)
                       })
                     } else {
                       that.$toast({
@@ -801,8 +798,6 @@
             that.couponCount2 = r.data.count || 0;
             that.couponCount3 = `不可用优惠券(${that.couponCount2})`;
             that.couponList1 = r.data.list || []
-
-
           }
         });
       },
@@ -947,7 +942,7 @@
           }
         } else {
           this.$toast({
-            message: '该优惠不合格'
+            message: '优惠券不可用，请查看优惠券使用说明'
           })
         }
         if (this.multiplesIndex.length == 0) {
@@ -955,7 +950,6 @@
         }
       },
       couponBtn() {
-        console.log(1)
         let data = this.common.getsign()
         let that = this
         this.coupon = false
@@ -978,9 +972,9 @@
           },
           dataType: "JSON",
           success: function (r) {
-            if(r.status != 200){
+            if (r.status != 200) {
               that.$toast({
-                message:r.message
+                message: r.message
               })
               //初始化选择优惠券id和金额
               $('.couponcheck').removeClass('couponcheckbg')
@@ -1650,11 +1644,13 @@
         }
 
       }
-      .isintegralrule{
+
+      .isintegralrule {
         margin: 0 1.5rem;
         color: #666;
         font-size: .6rem;
       }
+
       .couponclose {
         position: absolute;
         right: 1rem;

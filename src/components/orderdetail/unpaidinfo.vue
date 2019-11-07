@@ -47,6 +47,18 @@
             <div>¥ {{unpaidinfo.service_sum}}</div>
           </div>
           <div class="orderdetailitem">
+            <div>补缴费</div>
+            <div>¥ {{unpaidinfo.pay_back_sum}}</div>
+          </div>
+          <div class="orderdetailitem">
+            <div>追缴费</div>
+            <div>¥ {{unpaidinfo.additional_sum}}</div>
+          </div>
+          <div class="orderdetailitem">
+            <div>手续费(0.6%)</div>
+            <div>¥ {{unpaidinfo.service_charge}}</div>
+          </div>
+          <div class="orderdetailitem">
             <div>后补费</div>
             <div>¥ {{unpaidinfo.additional_sum}}</div>
           </div>

@@ -15,7 +15,6 @@
       methods:{
         abtn:function(){
           this.$emit("myFun",this.msg)   //$emit这个方法会触发一个事件
-          console.log(this.msg)
         }
       }
     }

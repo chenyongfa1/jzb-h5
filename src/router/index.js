@@ -51,6 +51,7 @@ import Unpaidinfo from '@/components/orderdetail/unpaidinfo'
 import Set from '@/components/my/set/index'
 import Newpages from '@/components/newpages/index'
 import Newpagedetail from '@/components/newpages/newpagedetail'
+import Newpagedetail1 from '@/components/newpages/newpagedetail1'
 import Test from '@/components/test/index'
 import Auto from '@/components/test/auto'
 import Wxpay from '@/components/socialsecurity/socialsecurity2/wxpay'
@@ -316,7 +317,20 @@ export default new Router({
         isTitle: true,
         isRight: true,
         isColor: false,
-        requireAuth: true
+        requireAuth: false
+      }
+    },
+    {
+      path: '/newpagedetail1',
+      name: 'newpagedetail1',
+      component: Newpagedetail1,
+      meta: {
+        footShow: false,
+        title: "新闻详情页",
+        isTitle: true,
+        isRight: true,
+        isColor: false,
+        requireAuth: false
       }
     },
     {
@@ -805,7 +819,7 @@ export default new Router({
       }
     },
     {
-      path: '/test',
+      path: '/test.html',
       name: 'test',
       component: Test,
       meta: {

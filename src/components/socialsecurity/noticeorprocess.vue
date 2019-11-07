@@ -50,8 +50,11 @@
           </div>
         </div>
       </van-tab>
-      <van-tab class="noticcon noticcon2 noheight" title="参保流程">
-        <div class="verline"></div>
+      <van-tab class="noticcon noticcon2 noheight" title="购买须知">
+        <div class="xuzhi">
+          <img src="../../../static/images/socialsecurity/xuzhi.png" alt="">
+        </div>
+        <!--<div class="verline"></div>
         <div class="notdes">
           <p class="notdes1">
             <span class="notnum">1</span>
@@ -74,7 +77,7 @@
             <span class="notnum">5</span>
             <span>参保成功 <br>个人查询缴纳信息</span>
           </p>
-        </div>
+        </div>-->
       </van-tab>
     </van-tabs>
   </div>
@@ -91,7 +94,7 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .noticeorprocess {
     margin-top: .8rem;
 
@@ -147,7 +150,13 @@
   .noheight {
     height: 23rem;
   }
-
+  .xuzhi{
+    width: 100%;
+    height: 20.7rem;
+    img{
+      width: 100%;
+    }
+  }
   .noticcon1 span {
     color: #333;
     font-family: PingFangSC-Regular;
