@@ -31,7 +31,7 @@
                           </div>
                         </div>
                       </van-popup>
-                      <div v-if="timeArr[index] != 0" class="tobepaidname pd16" @click="toOrderDetail(item.id)">
+                      <div v-if="item.status < 1" class="tobepaidname pd16" @click="toOrderDetail(item.id)">
                         <div>{{item.name}}的参保订单</div>
                         <div>
                           <van-icon name="arrow"/>
@@ -75,17 +75,17 @@
                       </div>
                       <div class="myorderline"></div>
                       <div class="tobepaidbtn pd16">
-                        <div class="tobepaidInvalid" v-if="timeArr[index] != 0">
+                        <div class="tobepaidInvalid" v-if="item.status <1">
                           订单还有{{timeArr[index]}}分钟失效
                         </div>
-                        <div @click="deleteOrder(item.id)" v-if="timeArr[index] != 0" class="tobepaiddelete">
+                        <div @click="deleteOrder(item.id)" v-if="item.status <1" class="tobepaiddelete">
                           删除订单
                         </div>
-                        <div @click="toPay(item.id,item.total)" v-if="timeArr[index] != 0" class="tobepaidpay">
+                        <div @click="toPay(item.id,item.total)" v-if="item.status <1" class="tobepaidpay">
                           去支付
                         </div>
                         <div v-else class="tobepaidpay tobepaidpay1">
-                          去支付
+                          已失效
                         </div>
                       </div>
                     </div>
@@ -186,7 +186,7 @@
           <van-tab>
             <div slot="title">
               补差额
-              <van-icon class="info" :info="tobepaidcount2"/>
+              <van-icon class="info" :info="zeroCountBC"/>
             </div>
             <div v-if="tobepaidcount2 !== undefined" id="socal3">
               <van-pull-refresh v-model="isLoading" @refresh="onRefresh2">
@@ -242,8 +242,11 @@
                       </div>
                       <div class="myorderline"></div>
                       <div class="tobepaidbtn tobepaidbtn1 pd16">
-                        <div @click="toPay(item.id,item.total)" class="tobepaidpay">
+                        <div v-if="item.status <= 0" @click="toPay(item.id,item.total)" class="tobepaidpay">
                           去支付
+                        </div>
+                        <div v-else class="tobepaidpay tobepaidpay1">
+                          已支付
                         </div>
                       </div>
                     </div>
@@ -409,8 +412,8 @@
         payCount: 0,
         browser: '',
         zfbPay: this.HOST + '/app/index/aliWapPay',
-        zeroCount:0.
-
+        zeroCount:0,
+        zeroCountBC:0,
       }
     },
     watch: {
@@ -653,6 +656,7 @@
           success: function (r) {
             that.tobepaid2 = r.data.list || []
             that.tobepaidcount2 = r.data.count
+            that.zeroCountBC = r.data.zeroCountBC == 0? undefined :r.data.zeroCountBC
           }
         })
       },
@@ -952,7 +956,7 @@
         justify-content: flex-end;
         align-items: center;
         color: #F97A2E;
-        font-size: .6rem;
+        font-size: .7rem;
       }
 
       .tobepaidcon {
@@ -967,7 +971,8 @@
         }
 
         .tobepaidright {
-          width: 50%;
+          width: 65%;
+          word-wrap: break-word;
         }
 
         .arrowmyorder {

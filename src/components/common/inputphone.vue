@@ -73,11 +73,6 @@
                     message: "请输入验证码！",
                   })
                 }else {
-                  // window.localStorage.setItem('controlbtn', 'false')
-                  // this.controlbtn = window.localStorage.controlbtn;
-                  // let aa = window.location.href
-                  // let id = aa.replace(/^.+id\=/, '').split("&")[0];
-                  // let tmp = aa.replace(/^.+tmp\=/, '').split("&")[0];
                   let inputPhone = JSON.parse(window.localStorage.getItem('inputPhone'))
                   let invitation = JSON.parse(window.localStorage.getItem('invitation'))
                   $.ajax({

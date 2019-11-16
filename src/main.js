@@ -54,12 +54,12 @@ import 'mint-ui/lib/style.css'
 Vue.config.productionTip = false
 Vue.prototype.$ajax = Axios
 //正式服
-Vue.prototype.HOST = 'https://www.jzbshebao.cn'
-Vue.prototype.Img = 'https://www.jzbshebao.cn'
+// Vue.prototype.HOST = 'https://www.jzbshebao.cn'
+// Vue.prototype.Img = 'https://www.jzbshebao.cn'
 // Vue.prototype.href= 'http://wx.jzbshebao.cn'
 // 测试服
-// Vue.prototype.HOST = 'http://test.jzbshebao.cn'
-// Vue.prototype.Img = 'http://test.jzbshebao.cn'
+Vue.prototype.HOST = 'http://test.jzbshebao.cn'
+Vue.prototype.Img = 'http://test.jzbshebao.cn'
 // Vue.prototype.href= 'http://wxtest.jzbshebao.cn'
 // 本地
 Vue.prototype.href= 'localhost:8080'
@@ -165,7 +165,6 @@ if (ua.match(/MicroMessenger/i) == 'micromessenger') {
             tmp:tmp,
             id:id,
           }
-          window.localStorage.setItem('controlbtn', 'true');
           window.localStorage.setItem('inputPhone', JSON.stringify(inputPhone));
           window.localStorage.setItem('userInfo', JSON.stringify(userInfo))
           next()
@@ -182,6 +181,18 @@ if (ua.match(/MicroMessenger/i) == 'micromessenger') {
         next()
       }
     } else {
+      next()
+    }
+    if(to.meta.wxtmprequireAuth){
+      let inputPhone = JSON.parse(window.localStorage.getItem('inputPhone')) || undefined
+      if (inputPhone != undefined) {
+        next({
+          path: '/binding'
+        })
+      } else {
+        next()
+      }
+    }else{
       next()
     }
   })
@@ -202,6 +213,9 @@ if (ua.match(/MicroMessenger/i) == 'micromessenger') {
 
   })
 }
+
+
+
 
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location) {

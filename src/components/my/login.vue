@@ -78,10 +78,10 @@
                                 let userInfo = JSON.stringify(r.data)
                                 window.localStorage.setItem('userInfo', userInfo)
                                 const redirect = that.$route.query.redirect
-                                /*that.$router.push({
+                                that.$router.push({
                                     path: '/my'
-                                })*/
-                                window.location.href = '/my'
+                                })
+                                // window.location.href = './my'
                             }
                         }
                     })

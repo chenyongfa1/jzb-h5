@@ -14,6 +14,7 @@ import Login from '@/components/my/login'
 import CodeLogin from '@/components/my/codelogin'
 import Register from '@/components/my/register'
 import Forgetpassword from '@/components/my/forgetpassword'
+import Binding from '@/components/my/binding'
 import Orangepartners from '@/components/my/orangepartners/index'
 import Partnerlevel from '@/components/my/orangepartners/partnerlevel'
 import myTeam from '@/components/my/myteam/index'
@@ -117,7 +118,8 @@ export default new Router({
         isTitle: false,
         isFootEmty: true,
         requireAuth: true,
-        wxtmprequireAuth: true
+        wxtmprequireAuth: true,
+        wxrequireAuth: true,
       }
     },
     {
@@ -188,6 +190,17 @@ export default new Router({
       meta: {
         footShow: false,
         title: "忘记密码",
+        isTitle: true,
+        isRight: false,
+      }
+    },
+    {
+      path: '/binding',
+      name: 'binding',
+      component: Binding,
+      meta: {
+        footShow: false,
+        title: "微信绑定",
         isTitle: true,
         isRight: false,
       }

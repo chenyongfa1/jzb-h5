@@ -10,7 +10,7 @@
       <div v-else>
         <Participantslist/>
       </div>
-      <inputPhone />
+<!--      <inputPhone />-->
     </div>
   </div>
 </template>
@@ -37,7 +37,6 @@
             }
         },
         methods: {
-
             getAccountList() {
                 let data = this.common.getsign()
                 let userInfo = JSON.parse(window.localStorage.getItem("userInfo"))
@@ -63,6 +62,9 @@
                 this.getAccountList()
             }else {
             }
+
+        },
+        created() {
 
         }
     }

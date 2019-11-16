@@ -21,11 +21,10 @@
         <p>工作随意换 社保不要断</p>
         <img src="../../static/images/my/hotline.png" alt="">
       </div>
-      <inputPhone/>
+<!--      <inputPhone/>-->
       <Isfootemty/>
       <NavFoot/>
     </div>
-
   </div>
 </template>
 
@@ -42,7 +41,6 @@
       Userinfo,
       Isfootemty,
       inputPhone
-
     },
     computed:mapState({
       vip:state=>state.vip,
