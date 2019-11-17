@@ -1,10 +1,10 @@
-<template>
+﻿<template>
     <div>
       <div class="content">
         <div class="scan">
           <div id="bcid">
             <div style="height:40%"></div>
-            <p class="tip">...载入中...</p>
+            <p class="tip">...载入中111...</p>
           </div>
           <footer>
             <button @click="startRecognize">1.创建控件</button>
